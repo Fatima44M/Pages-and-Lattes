@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shopping Cart | Pages &amp; Lattes</title>
+
+  <!-- ===================== TEAM AUTHORS (EDIT NAMES) =====================
+       1. HTML (Page Structure) ................ Fatima Mohammed
+       2. CSS (Style and Cosmetics) ............ Member 2: FIRST LAST
+       3. Bootstrap (Professional look) ........ Fatima Mohammed
+       4. JavaScript (behaviors/field checks) .. Member 3: FIRST LAST
+       5. JSON Product/Cart Document ........... Member 4: FIRST LAST
+       6. jQuery (Search product collection) ... Member 4: FIRST LAST
+       7. AJAX (send JSON to RESTful service) .. Member 3: FIRST LAST
+       ===================================================================== -->
+
+  <!-- Bootstrap (cloud source) | Author: Fatima Mohammed -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jQuery (cloud source) | Author: Member 4 FIRST LAST -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- CSS (Page Style and Cosmetics) | Author: Member 2 FIRST LAST -->
+  <style>
+    :root { --pink:#f6c9d1; --pink-light:#fdf1f3; --rose:#a65d6f; --ink:#4a2f33; }
+    body { background: var(--pink-light); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
+    .site-nav { background: var(--pink); text-align: center; padding: 1.5rem 0; }
+    .site-nav a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 1.15rem; margin: 0 1.1rem; }
+    .site-nav a:hover, .site-nav a.active { color: var(--rose); }
+    .hero { text-align: center; color: #fff; padding: 4rem 1rem;
+            background: linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
+                        url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover; }
+    .hero h1 { font-weight: 700; font-size: 3rem; margin: 0; }
+    .hero p { font-style: italic; font-size: 1.25rem; margin: .5rem 0 0; }
+    .section-title { text-align: center; color: var(--rose); font-weight: 700; margin: 2.5rem 0 0; }
+    .section-title::after { content: ""; display: block; width: 90px; height: 3px; background: var(--rose); margin: .9rem auto 2rem; }
+    .card { border: 0; box-shadow: 0 2px 8px rgba(74,47,51,.12); }
+    .btn-primary { background: var(--rose); border-color: var(--rose); }
+    .btn-primary:hover { background: #8c4859; border-color: #8c4859; }
+    .btn-outline-danger { --bs-btn-padding-y: .15rem; }
+    pre#jsonOutput { background: #fff; color: var(--ink); border: 2px solid var(--pink); padding: 1rem; border-radius: .5rem; min-height: 6rem; max-height: 22rem; overflow: auto; }
+    footer.site-footer { background: var(--pink); color: var(--ink); text-align: center; padding: 1.5rem 0; margin-top: 2.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- HTML (Page Structure) and Bootstrap classes/layout | Author: Fatima Mohammed -->
+<nav class="site-nav">
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#books">Books</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#hours">Hours</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#contact">Contact</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/signup.html">Sign Up</a>
+  <a href="product.html">Products</a>
+  <a href="shoppingcart.html" class="active">Shopping Cart</a>
+</nav>
+<header class="hero">
+  <h1>Pages &amp; Lattes</h1>
+  <p>Where every cup comes with a chapter</p>
+</header>
+<h2 class="section-title">Shopping Cart</h2>
+
+<main class="container">
+  <div class="row g-4">
+    <!-- Search and add products -->
+    <div class="col-lg-6">
+      <div class="card"><div class="card-body">
+        <h3 class="h5 mb-3">Search Products</h3>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="searchBox" placeholder="Search by id, description or category">
+          <button class="btn btn-secondary" id="clearSearch" type="button">Clear</button>
+        </div>
+        <div id="searchMsg" class="form-text mb-2"></div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Id</th><th>Description</th><th>Category</th><th class="text-end">Price</th><th></th></tr></thead>
+            <tbody id="catalogBody"></tbody>
+          </table>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- The cart -->
+    <div class="col-lg-6">
+      <div class="card mb-4"><div class="card-body">
+        <h3 class="h5 mb-3">Your Cart</h3>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead><tr><th>Item</th><th style="width:90px">Qty</th><th class="text-end">Line</th><th></th></tr></thead>
+            <tbody id="cartBody"></tbody>
+            <tfoot><tr><th colspan="2" class="text-end">Total</th><th class="text-end" id="cartTotal">$0.00</th><th></th></tr></tfoot>
+          </table>
+        </div>
+        <div id="cartMsg" class="text-danger small mb-2"></div>
+        <button class="btn btn-primary" id="sendBtn" type="button">Submit Cart</button>
+        <button class="btn btn-outline-secondary" id="emptyBtn" type="button">Empty Cart</button>
+        <div id="ajaxMsg" class="form-text mt-2"></div>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h3 class="h5 mb-3">Shopping Cart JSON Document</h3>
+        <pre id="jsonOutput"></pre>
+      </div></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div>Open Daily: 7:00 AM &ndash; 8:00 PM</div>
+  <div>123 Chapter Lane, Booktown | (555) 123-4567</div>
+  <div>&copy; 2026 Pages &amp; Lattes</div>
+</footer>
+
+<!-- JSON product document collection and cart document | Author: Member 4 FIRST LAST -->
+<script>
+  var productCollection = { products: [
+    { productId: "P100", productDescription: "House Latte",         productCategory: "Coffee & Espresso", productUnitOfMeasure: "Cup",  productPrice: 4.50,  productWeight: null },
+    { productId: "P101", productDescription: "Cappuccino",          productCategory: "Coffee & Espresso", productUnitOfMeasure: "Cup",  productPrice: 4.25,  productWeight: null },
+    { productId: "P102", productDescription: "Chai Tea Latte",      productCategory: "Tea & Other Drinks", productUnitOfMeasure: "Cup", productPrice: 4.75,  productWeight: null },
+    { productId: "P200", productDescription: "Butter Croissant",    productCategory: "Bakery",            productUnitOfMeasure: "Each", productPrice: 3.25,  productWeight: 0.25 },
+    { productId: "P201", productDescription: "Blueberry Muffin",    productCategory: "Bakery",            productUnitOfMeasure: "Each", productPrice: 3.50,  productWeight: 0.30 },
+    { productId: "P300", productDescription: "Used Paperback Novel", productCategory: "Books",            productUnitOfMeasure: "Each", productPrice: 8.00,  productWeight: 0.60 },
+    { productId: "P301", productDescription: "Cookbook: Cafe Baking", productCategory: "Books",           productUnitOfMeasure: "Each", productPrice: 18.99, productWeight: 1.40 },
+    { productId: "P400", productDescription: "Pages & Lattes Mug",  productCategory: "Merchandise",       productUnitOfMeasure: "Each", productPrice: 12.00, productWeight: 0.90 }
+  ] };
+
+  // The shopping cart JSON document
+  var cart = { cartId: "CART-" + Date.now(), items: [], cartTotal: "0.00" };
+</script>
+
+<!-- JavaScript (page behaviors and field integrity checks) | Author: Member 3 FIRST LAST -->
+<script>
+  function money(n) { return "$" + Number(n).toFixed(2); }
+
+  // Quantity must be a whole number from 1 to 99
+  function validQty(q) { return /^\d+$/.test(String(q)) && Number(q) >= 1 && Number(q) <= 99; }
+
+  function recalc() {
+    var total = 0;
+    $.each(cart.items, function (i, it) {
+      it.lineTotal = (it.unitPrice * it.quantity).toFixed(2);
+      total += it.unitPrice * it.quantity;
+    });
+    cart.cartTotal = total.toFixed(2);
+  }
+
+  function renderCart() {
+    recalc();
+    var $b = $("#cartBody").empty();
+    if (cart.items.length === 0) {
+      $b.append('<tr><td colspan="4" class="text-muted text-center">Your cart is empty.</td></tr>');
+    }
+    $.each(cart.items, function (i, it) {
+      $b.append(
+        '<tr><td>' + it.productDescription + '<div class="small text-muted">' + it.productId + '</div></td>' +
+        '<td><input type="number" min="1" max="99" class="form-control form-control-sm qty" data-id="' + it.productId + '" value="' + it.quantity + '"></td>' +
+        '<td class="text-end">' + money(it.lineTotal) + '</td>' +
+        '<td><button class="btn btn-outline-danger btn-sm remove" data-id="' + it.productId + '" type="button">Remove</button></td></tr>');
+    });
+    $("#cartTotal").text(money(cart.cartTotal));
+    $("#jsonOutput").text(JSON.stringify(cart, null, 2));
+  }
+
+  $(document).on("click", ".add", function () {
+    var id = $(this).data("id");
+    var existing = $.grep(cart.items, function (it) { return it.productId === id; })[0];
+    if (existing) {
+      if (existing.quantity < 99) existing.quantity++;
+    } else {
+      var p = $.grep(productCollection.products, function (x) { return x.productId === id; })[0];
+      cart.items.push({ productId: p.productId, productDescription: p.productDescription,
+                        unitPrice: p.productPrice, quantity: 1, lineTotal: p.productPrice.toFixed(2) });
+    }
+    $("#cartMsg, #ajaxMsg").text("");
+    renderCart();
+  });
+
+  $(document).on("click", ".remove", function () {
+    var id = $(this).data("id");
+    cart.items = $.grep(cart.items, function (it) { return it.productId !== id; });
+    renderCart();
+  });
+
+  $(document).on("change", ".qty", function () {
+    var id = $(this).data("id"), q = $(this).val();
+    var item = $.grep(cart.items, function (it) { return it.productId === id; })[0];
+    if (!validQty(q)) {
+      $("#cartMsg").text("Quantity must be a whole number from 1 to 99.");
+      $(this).val(item.quantity);
+      return;
+    }
+    $("#cartMsg").text("");
+    item.quantity = parseInt(q, 10);
+    renderCart();
+  });
+
+  $("#emptyBtn").on("click", function () {
+    cart.items = [];
+    $("#cartMsg, #ajaxMsg").text("");
+    renderCart();
+  });
+</script>
+
+<!-- jQuery (search the product document collection) | Author: Member 4 FIRST LAST -->
+<script>
+  function renderCatalog(list) {
+    var $b = $("#catalogBody").empty();
+    $.each(list, function (i, p) {
+      $b.append('<tr><td>' + p.productId + '</td><td>' + p.productDescription + '</td><td>' + p.productCategory +
+        '</td><td class="text-end">' + money(p.productPrice) + '</td>' +
+        '<td><button class="btn btn-primary btn-sm add" data-id="' + p.productId + '" type="button">Add</button></td></tr>');
+    });
+    $("#searchMsg").text(list.length + " product(s) shown.");
+  }
+
+  $("#searchBox").on("keyup input", function () {
+    var term = $(this).val().trim().toLowerCase();
+    var results = $.grep(productCollection.products, function (p) {
+      return (p.productId + " " + p.productDescription + " " + p.productCategory).toLowerCase().indexOf(term) !== -1;
+    });
+    renderCatalog(results);
+  });
+
+  $("#clearSearch").on("click", function () {
+    $("#searchBox").val("");
+    renderCatalog(productCollection.products);
+  });
+
+  $(function () { renderCatalog(productCollection.products); renderCart(); });
+</script>
+
+<!-- AJAX (transport the JSON document to a RESTful service) | Author: Member 3 FIRST LAST -->
+<script>
+  // The NodeJS RESTful API is built in a later assignment. Change this URL then.
+  var CART_API_URL = "http://localhost:3000/api/cart";
+
+  $("#sendBtn").on("click", function () {
+    if (cart.items.length === 0) {
+      $("#cartMsg").text("Add at least one product before submitting.");
+      return;
+    }
+    $("#cartMsg").text("");
+    $("#ajaxMsg").text("Sending cart...");
+    $.ajax({
+      url: CART_API_URL,
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(cart),
+      success: function (response) {
+        $("#ajaxMsg").text("Cart sent. Service replied: " + JSON.stringify(response));
+      },
+      error: function () {
+        $("#ajaxMsg").text("The cart service is not available yet (it is built in a later assignment). The JSON above is what will be sent.");
+      }
+    });
+  });
+</script>
+</body>
+</html>
