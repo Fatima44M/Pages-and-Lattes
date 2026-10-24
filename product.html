@@ -21,7 +21,7 @@
   <!-- jQuery (cloud source) | Author: Barsana Acharjoy -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- CSS (Page Style and Cosmetics) | Author: Dhruvi Mistry-->
+  <!-- CSS (Page Style and Cosmetics) | Author: Dhruvi Mistry -->
   <style>
     /* Matches the Pages & Lattes pink storefront: pink nav bar, photo hero, rose headings, Georgia serif */
     :root { --pink:#f6c9d1; --pink-light:#fdf1f3; --rose:#a65d6f; --ink:#4a2f33; }
@@ -36,59 +36,13 @@
     .hero p { font-style: italic; font-size: 1.25rem; margin: .5rem 0 0; }
     .section-title { text-align: center; color: var(--rose); font-weight: 700; margin: 2.5rem 0 0; }
     .section-title::after { content: ""; display: block; width: 90px; height: 3px; background: var(--rose); margin: .9rem auto 2rem; }
-    .card {
-     border: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(74,47,51,.12);
-}
+    .card { border: 0; box-shadow: 0 2px 8px rgba(74,47,51,.12); }
     .btn-primary { background: var(--rose); border-color: var(--rose); }
     .btn-primary:hover { background: #8c4859; border-color: #8c4859; }
     .btn-secondary { background: var(--ink); border-color: var(--ink); }
     label .req { color: #c0392b; }
     pre#jsonOutput { background: #fff; color: var(--ink); border: 2px solid var(--pink); padding: 1rem; border-radius: .5rem; min-height: 6rem; }
     footer.site-footer { background: var(--pink); color: var(--ink); text-align: center; padding: 1.5rem 0; margin-top: 2.5rem; }
-
-    main.container {
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-
-
-.card-body {
-    padding: 1.5rem;
-}
-
-.form-label {
-    color: var(--ink);
-    font-weight: 700;
-}
-
-.form-control,
-.form-select {
-    border: 1px solid #e3b5bf;
-    border-radius: 8px;
-    padding: 0.65rem 0.75rem;
-}
-
-.form-control:focus,
-.form-select:focus {
-    border-color: var(--rose);
-    box-shadow: 0 0 0 0.2rem rgba(166, 93, 111, 0.15);
-}
-
-#productForm .btn {
-    min-width: 100px;
-    margin-right: 8px;
-    border-radius: 8px;
-}
-
-#jsonOutput {
-    overflow-x: auto;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-}
   </style>
 </head>
 <body>
@@ -100,6 +54,7 @@
   <a href="https://fatima44m.github.io/Pages-and-Lattes/#contact">Contact</a>
   <a href="https://fatima44m.github.io/Pages-and-Lattes/signup.html">Sign Up</a>
   <a href="product.html" class="active">Products</a>
+  <a href="shoppingcart.html">Shopping Cart</a>
 </nav>
 <header class="hero">
   <h1>Pages &amp; Lattes</h1>
@@ -202,71 +157,29 @@
 
 <!-- JavaScript (page behaviors and field integrity checks) | Author: Sara Mahmood -->
 <script>
-  function validateField(selector, test) {
-    var value = $(selector).val().trim();
-    var isValid = test(value);
-
-    $(selector)
-      .toggleClass("is-invalid", !isValid)
-      .toggleClass("is-valid", isValid);
-
-    return isValid;
+  function validateField(sel, test) {
+    var ok = test($(sel).val().trim());
+    $(sel).toggleClass("is-invalid", !ok).toggleClass("is-valid", ok);
+    return ok;
   }
-
   function validateForm() {
     var results = [
-      // Product ID cannot be blank
-      validateField("#productId", function (value) {
-        return value.length > 0;
-      }),
-
-      // Description cannot be blank
-      validateField("#productDescription", function (value) {
-        return value.length > 0;
-      }),
-
-      // A category must be selected
-      validateField("#productCategory", function (value) {
-        return value !== "";
-      }),
-
-      // A unit of measure must be selected
-      validateField("#productUOM", function (value) {
-        return value !== "";
-      }),
-
-      // Price must be a positive number with up to two decimals
-      validateField("#productPrice", function (value) {
-        return /^\d+(\.\d{1,2})?$/.test(value) &&
-               Number(value) > 0;
-      }),
-
-      // Weight is optional, but if entered it must be zero or greater
-      validateField("#productWeight", function (value) {
-        return value === "" ||
-               (/^\d+(\.\d+)?$/.test(value) &&
-                Number(value) >= 0);
-      })
+      validateField("#productId", function (v) { return v.length > 0; }),
+      validateField("#productDescription", function (v) { return v.length > 0; }),
+      validateField("#productCategory", function (v) { return v !== ""; }),
+      validateField("#productUOM", function (v) { return v !== ""; }),
+      validateField("#productPrice", function (v) { return /^\d+(\.\d{1,2})?$/.test(v) && parseFloat(v) > 0; }),
+      validateField("#productWeight", function (v) { return v === "" || (/^\d+(\.\d+)?$/.test(v) && parseFloat(v) >= 0); })
     ];
-
-    // Weight is optional, so blank weight should not appear valid
-    if ($("#productWeight").val().trim() === "") {
-      $("#productWeight").removeClass("is-valid");
-    }
-
+    if ($("#productWeight").val().trim() === "") $("#productWeight").removeClass("is-valid");
     return results.every(Boolean);
   }
-
-  // Format the price to two decimal places when leaving the field
+  // Format price as money on leaving the field
   $("#productPrice").on("blur", function () {
-    var value = $(this).val().trim();
-
-    if (/^\d+(\.\d{1,2})?$/.test(value) && Number(value) > 0) {
-      $(this).val(Number(value).toFixed(2));
-    }
+    var v = parseFloat($(this).val().replace(/[$,]/g, ""));
+    if (!isNaN(v) && v > 0) $(this).val(v.toFixed(2));
   });
 </script>
-
 
 <!-- JSON document + jQuery (search and update) | Author: Barsana Acharjoy -->
 <script>
@@ -301,7 +214,7 @@
       productDocument.products.push(product);
       $("#searchMsg").text("Product " + product.productId + " added.");
     }
-    showJson(productDocument);
+    showJson(product);
   });
 
   $("#searchBtn").on("click", function () {
