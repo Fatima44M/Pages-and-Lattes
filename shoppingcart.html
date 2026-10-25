@@ -7,7 +7,7 @@
 
   <!-- ===================== TEAM AUTHORS (EDIT NAMES) =====================
        1. HTML (Page Structure) ................ Fatima Mohammed
-       2. CSS (Style and Cosmetics) ............ Member 2: FIRST LAST
+       2. CSS (Style and Cosmetics) ............ Dhruvi Mistry
        3. Bootstrap (Professional look) ........ Fatima Mohammed
        4. JavaScript (behaviors/field checks) .. Member 3: FIRST LAST
        5. JSON Product/Cart Document ........... Member 4: FIRST LAST
@@ -22,27 +22,162 @@
   <!-- jQuery (cloud source) | Author: Member 4 FIRST LAST -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- CSS (Page Style and Cosmetics) | Author: Member 2 FIRST LAST -->
-  <style>
-    :root { --pink:#f6c9d1; --pink-light:#fdf1f3; --rose:#a65d6f; --ink:#4a2f33; }
-    body { background: var(--pink-light); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
-    .site-nav { background: var(--pink); text-align: center; padding: 1.5rem 0; }
-    .site-nav a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 1.15rem; margin: 0 1.1rem; }
-    .site-nav a:hover, .site-nav a.active { color: var(--rose); }
-    .hero { text-align: center; color: #fff; padding: 4rem 1rem;
-            background: linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
-                        url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover; }
-    .hero h1 { font-weight: 700; font-size: 3rem; margin: 0; }
-    .hero p { font-style: italic; font-size: 1.25rem; margin: .5rem 0 0; }
-    .section-title { text-align: center; color: var(--rose); font-weight: 700; margin: 2.5rem 0 0; }
-    .section-title::after { content: ""; display: block; width: 90px; height: 3px; background: var(--rose); margin: .9rem auto 2rem; }
-    .card { border: 0; box-shadow: 0 2px 8px rgba(74,47,51,.12); }
-    .btn-primary { background: var(--rose); border-color: var(--rose); }
-    .btn-primary:hover { background: #8c4859; border-color: #8c4859; }
-    .btn-outline-danger { --bs-btn-padding-y: .15rem; }
-    pre#jsonOutput { background: #fff; color: var(--ink); border: 2px solid var(--pink); padding: 1rem; border-radius: .5rem; min-height: 6rem; max-height: 22rem; overflow: auto; }
-    footer.site-footer { background: var(--pink); color: var(--ink); text-align: center; padding: 1.5rem 0; margin-top: 2.5rem; }
-  </style>
+  
+<!-- CSS (Page Style and Cosmetics) | Author: Dhruvi Mistry -->
+<style>
+    :root {
+        --pink: #f6c9d1;
+        --pink-light: #fdf1f3;
+        --rose: #a65d6f;
+        --ink: #4a2f33;
+    }
+
+    body {
+        background: var(--pink-light);
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .site-nav {
+        background: var(--pink);
+        text-align: center;
+        padding: 1.5rem 0;
+    }
+
+    .site-nav a {
+        color: var(--ink);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 0 1.1rem;
+    }
+
+    .site-nav a:hover,
+    .site-nav a.active {
+        color: var(--rose);
+    }
+
+    .hero {
+        text-align: center;
+        color: #fff;
+        padding: 4rem 1rem;
+        background:
+            linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
+            url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover;
+    }
+
+    .hero h1 {
+        font-weight: 700;
+        font-size: 3rem;
+        margin: 0;
+    }
+
+    .hero p {
+        font-style: italic;
+        font-size: 1.25rem;
+        margin: .5rem 0 0;
+    }
+
+    .section-title {
+        text-align: center;
+        color: var(--rose);
+        font-weight: 700;
+        margin: 2.5rem 0 0;
+    }
+
+    .section-title::after {
+        content: "";
+        display: block;
+        width: 90px;
+        height: 3px;
+        background: var(--rose);
+        margin: .9rem auto 2rem;
+    }
+
+    /* CSS enhancements by Dhruvi Mistry */
+    .card {
+        border: 1px solid #f0c3d0;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(166, 93, 111, 0.12);
+        transition: box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 7px 18px rgba(166, 93, 111, 0.20);
+    }
+
+    .btn-primary {
+        background: var(--rose);
+        border-color: var(--rose);
+    }
+
+    .btn-primary:hover {
+        background: #8c4859;
+        border-color: #8c4859;
+    }
+
+    .btn-outline-danger {
+        --bs-btn-padding-y: .15rem;
+    }
+
+    .table thead th {
+        background-color: #f6c9d1;
+        color: #4a2f33;
+        border-bottom: 2px solid #e8aab9;
+    }
+
+    .form-control:focus {
+        border-color: #d98ca0;
+        box-shadow: 0 0 0 0.2rem rgba(166, 93, 111, 0.18);
+    }
+
+    .btn {
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    pre#jsonOutput {
+        background: #fff;
+        color: var(--ink);
+        border: 2px solid var(--pink);
+        padding: 1rem;
+        border-radius: .5rem;
+        min-height: 6rem;
+        max-height: 22rem;
+        overflow: auto;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    footer.site-footer {
+        background: var(--pink);
+        color: var(--ink);
+        text-align: center;
+        padding: 1.5rem 0;
+        margin-top: 2.5rem;
+    }
+
+    @media (max-width: 576px) {
+        .site-nav a {
+            display: inline-block;
+            margin: 0.4rem;
+            font-size: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+        }
+    }
+</style>
 </head>
 <body>
 
