@@ -365,13 +365,13 @@
   $(function () { renderCatalog(productCollection.products); renderCart(); });
 </script>
 
+
 <!-- AJAX (transport the JSON document to a RESTful service) | Author: Sara Mahmood -->
 <script>
-  // The NodeJS RESTful API is built in a later assignment. Change this URL then.
+  // The NodeJS RESTful API will be built in a later assignment.
   var CART_API_URL = "http://localhost:3000/api/cart";
 
-  
-$("#sendBtn").on("click", function () {
+  $("#sendBtn").on("click", function () {
     // Check that the cart is not empty
     if (cart.items.length === 0) {
       $("#cartMsg").text("Add at least one product before submitting.");
@@ -391,19 +391,22 @@ $("#sendBtn").on("click", function () {
     $("#cartMsg").text("");
     $("#ajaxMsg").text("Sending cart...");
 
-    }
-    $("#cartMsg").text("");
-    $("#ajaxMsg").text("Sending cart...");
     $.ajax({
       url: CART_API_URL,
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify(cart),
+
       success: function (response) {
-        $("#ajaxMsg").text("Cart sent. Service replied: " + JSON.stringify(response));
+        $("#ajaxMsg").text(
+          "Cart sent. Service replied: " + JSON.stringify(response)
+        );
       },
+
       error: function () {
-        $("#ajaxMsg").text("The cart service is not available yet (it is built in a later assignment). The JSON above is what will be sent.");
+        $("#ajaxMsg").text(
+          "The cart service is not available yet (it is built in a later assignment). The JSON above is what will be sent."
+        );
       }
     });
   });
