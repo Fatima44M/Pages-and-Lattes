@@ -9,10 +9,10 @@
        1. HTML (Page Structure) ................ Fatima Mohammed
        2. CSS (Style and Cosmetics) ............ Dhruvi Mistry
        3. Bootstrap (Professional look) ........ Fatima Mohammed
-       4. JavaScript (behaviors/field checks) .. Member 3: FIRST LAST
+       4. JavaScript (behaviors/field checks) .. Member 3: Sara Mahmood
        5. JSON Product/Cart Document ........... Member 4: FIRST LAST
        6. jQuery (Search product collection) ... Member 4: FIRST LAST
-       7. AJAX (send JSON to RESTful service) .. Member 3: FIRST LAST
+       7. AJAX (send JSON to RESTful service) .. Member 3: Sara Mahmood
        ===================================================================== -->
 
   <!-- Bootstrap (cloud source) | Author: Fatima Mohammed -->
@@ -264,7 +264,7 @@
   var cart = { cartId: "CART-" + Date.now(), items: [], cartTotal: "0.00" };
 </script>
 
-<!-- JavaScript (page behaviors and field integrity checks) | Author: Member 3 FIRST LAST -->
+<!-- JavaScript (page behaviors and field integrity checks) | Author: Sara Mahmood -->
 <script>
   function money(n) { return "$" + Number(n).toFixed(2); }
 
@@ -365,15 +365,32 @@
   $(function () { renderCatalog(productCollection.products); renderCart(); });
 </script>
 
-<!-- AJAX (transport the JSON document to a RESTful service) | Author: Member 3 FIRST LAST -->
+<!-- AJAX (transport the JSON document to a RESTful service) | Author: Sara Mahmood -->
 <script>
   // The NodeJS RESTful API is built in a later assignment. Change this URL then.
   var CART_API_URL = "http://localhost:3000/api/cart";
 
-  $("#sendBtn").on("click", function () {
+  
+$("#sendBtn").on("click", function () {
+    // Check that the cart is not empty
     if (cart.items.length === 0) {
       $("#cartMsg").text("Add at least one product before submitting.");
       return;
+    }
+
+    // Extra validation: check every cart item's quantity
+    var quantitiesValid = cart.items.every(function (item) {
+      return validQty(item.quantity);
+    });
+
+    if (!quantitiesValid) {
+      $("#cartMsg").text("Every item must have a quantity from 1 to 99.");
+      return;
+    }
+
+    $("#cartMsg").text("");
+    $("#ajaxMsg").text("Sending cart...");
+
     }
     $("#cartMsg").text("");
     $("#ajaxMsg").text("Sending cart...");
