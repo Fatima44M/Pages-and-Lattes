@@ -103,7 +103,7 @@
      ng-if="shipForm.city.$error.pattern">
     Use letters, spaces, apostrophes, or hyphens only.
 </div>
-            <div class="col-md-3 mb-3">
+            </div>
               <label for="state" class="form-label">State <span class="req">*</span></label>
               <select class="form-select" id="state" name="state" ng-model="form.state" required
                       ng-options="s for s in states"
@@ -164,10 +164,20 @@
 </footer>
 
 <!-- AngularJS controller (gets shipping details from the DOM, builds and shows the JSON) | Author: [ADD NAME] -->
-<!-- JavaScript (field integrity checks) | Author: Sara Mahmood -->
-  
 
-  
+<!-- JavaScript (field integrity checks) | Author: Sara Mahmood -->
+<script>
+function validateCity(city) {
+    var cityPattern = /^[a-zA-Z][a-zA-Z\s.'-]*$/;
+
+    if (!cityPattern.test(city)) {
+        return false;
+    }
+
+    return true;
+}
+</script>
+ 
 <!-- JSON Shipping Document structure | Author: [ADD NAME] -->
 <script>
   var app = angular.module("shippingApp", []);
@@ -209,9 +219,11 @@
     };
   }]);
 </script>
-<!-- AJAX (transport the JSON document to a RESTful service) | Author: Sara Mahmood -->
 
-  function sendShipping(doc, $scope) {
+<!-- AJAX (transport the JSON document to a RESTful service) | Author: Sara Mahmood -->
+<script>
+var SHIPPING_API_URL = "http://localhost:3000/shipping";
+function sendShipping(doc, $scope) {
     $scope.ajaxMessage = "Sending shipping details...";
 
     $.ajax({
@@ -235,6 +247,6 @@
         }
     });
 }
-  
+</script>
   
 <!-- jQuery | Author: [ADD NAME] -->
