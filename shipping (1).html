@@ -9,10 +9,10 @@
        HTML (Page Structure) ................... Fatima Mohammed
        CSS (Style and Cosmetics) ............... [ADD NAME]
        Bootstrap (Professional look) ........... Fatima Mohammed
-       JavaScript (behaviors/field checks) ..... [ADD NAME]
+       JavaScript (behaviors/field checks) ..... Sara Mahmood
        JSON Shipping Document .................. [ADD NAME]
        jQuery .................................. [ADD NAME]
-       AJAX (send JSON to RESTful service) ..... [ADD NAME]
+       AJAX (send JSON to RESTful service) ..... Sara Mahmood
        AngularJS (gets shipping details, shows JSON) ... [ADD NAME]
        ========================================================= -->
 
@@ -149,7 +149,84 @@
 </footer>
 
 <!-- AngularJS controller (gets shipping details from the DOM, builds and shows the JSON) | Author: [ADD NAME] -->
-<!-- JavaScript (field integrity checks) | Author: [ADD NAME] -->
+<!-- JavaScript (field integrity checks) | Author: Sara Mahmood -->
+
+  function validateShippingForm() {
+    let isValid = true;
+
+    const address = $("#address").val().trim();
+    const city = $("#city").val().trim();
+    const state = $("#state").val();
+    const zip = $("#zip").val().trim();
+    const carrier = $("#carrier").val();
+    const method = $("#method").val();
+
+    // Check address
+    if (address === "") {
+        $("#addressError").text("Address is required.");
+        isValid = false;
+    } else {
+        $("#addressError").text("");
+    }
+
+    // Check city
+    if (city === "") {
+        $("#cityError").text("City is required.");
+        isValid = false;
+    } else if (!/^[a-zA-Z\s.'-]+$/.test(city)) {
+        $("#cityError").text("Enter a valid city name.");
+        isValid = false;
+    } else {
+        $("#cityError").text("");
+    }
+
+    // Check state
+    if (state === "") {
+        $("#stateError").text("Please select a state.");
+        isValid = false;
+    } else {
+        $("#stateError").text("");
+    }
+
+    // Check ZIP code
+    if (!/^\d{5}$/.test(zip)) {
+        $("#zipError").text("Enter a valid 5-digit ZIP code.");
+        isValid = false;
+    } else {
+        $("#zipError").text("");
+    }
+
+    // Check carrier
+    if (carrier === "") {
+        $("#carrierError").text("Please select a carrier.");
+        isValid = false;
+    } else {
+        $("#carrierError").text("");
+    }
+
+    // Check shipping method
+    if (method === "") {
+        $("#methodError").text("Please select a shipping method.");
+        isValid = false;
+    } else {
+        $("#methodError").text("");
+    }
+
+    return isValid;
+}
+  <form id="shippingForm">
+    <input type="text" id="address">
+    <span id="addressError" class="text-danger"></span>
+
+    <input type="text" id="city">
+    <span id="cityError" class="text-danger"></span>
+
+    <!-- Keep your existing state, ZIP, carrier,
+         and shipping method fields here. -->
+
+    <button type="submit">Submit</button>
+</form>
+  
 <!-- JSON Shipping Document structure | Author: [ADD NAME] -->
 <script>
   var app = angular.module("shippingApp", []);
@@ -192,7 +269,53 @@
   }]);
 </script>
 
-<!-- AJAX (transport the JSON document to a RESTful service) | Author: [ADD NAME] -->
+  $("#shippingForm").on("submit", function (event) {
+    event.preventDefault();
+
+    if (!validateShippingForm()) {
+        return;
+    }
+
+    // Valid form: continue to AJAX submission.
+    sendShippingData();
+});
+  
+
+<!-- AJAX (transport the JSON document to a RESTful service) | Author: Sara Mahmood -->
+
+  function sendShippingData() {
+    const shippingData = {
+        shippingDestination: {
+            address: $("#address").val().trim(),
+            city: $("#city").val().trim(),
+            state: $("#state").val(),
+            zip: $("#zip").val().trim()
+        },
+        shippingCarrier: $("#carrier").val(),
+        shippingMethod: $("#method").val()
+    };
+
+    $.ajax({
+        url: "/api/shipping",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(shippingData),
+
+        success: function (response) {
+            $("#shippingMessage").text(
+                "Shipping information sent!"
+            );
+        },
+
+        error: function () {
+            $("#shippingMessage").text(
+                "Shipping service is not available yet."
+            );
+        }
+    });
+}
+  
+  
 <!-- jQuery | Author: [ADD NAME] -->
 <script>
   // The NodeJS RESTful API is built in a later assignment. Change this URL then.
