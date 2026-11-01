@@ -84,10 +84,25 @@
           <div class="row">
             <div class="col-md-5 mb-3">
               <label for="city" class="form-label">City <span class="req">*</span></label>
-              <input type="text" class="form-control" id="city" name="city" ng-model="form.city" required
-                     ng-class="{'is-invalid': (shipForm.city.$touched || submitted) && shipForm.city.$invalid}">
-              <div class="invalid-feedback">City is required.</div>
-            </div>
+             
+              <!-- Sara Mahmood: City field validation -->
+<input type="text"
+       class="form-control"
+       id="city"
+       name="city"
+       ng-model="form.city"
+       required
+       ng-pattern="/^[a-zA-Z][a-zA-Z\s.'-]*$/"
+       ng-class="{'is-invalid': (shipForm.city.$touched || submitted) && shipForm.city.$invalid}">
+              <div class="invalid-feedback"
+     ng-if="shipForm.city.$error.required">
+    City is required.
+</div>
+
+<div class="invalid-feedback"
+     ng-if="shipForm.city.$error.pattern">
+    Use letters, spaces, apostrophes, or hyphens only.
+</div>
             <div class="col-md-3 mb-3">
               <label for="state" class="form-label">State <span class="req">*</span></label>
               <select class="form-select" id="state" name="state" ng-model="form.state" required
@@ -150,6 +165,7 @@
 
 <!-- AngularJS controller (gets shipping details from the DOM, builds and shows the JSON) | Author: [ADD NAME] -->
 <!-- JavaScript (field integrity checks) | Author: Sara Mahmood -->
+  
 
   
 <!-- JSON Shipping Document structure | Author: [ADD NAME] -->
@@ -193,22 +209,32 @@
     };
   }]);
 </script>
-
-  $("#shippingForm").on("submit", function (event) {
-    event.preventDefault();
-
-    if (!validateShippingForm()) {
-        return;
-    }
-
-    // Valid form: continue to AJAX submission.
-    sendShippingData();
-});
-  
-
 <!-- AJAX (transport the JSON document to a RESTful service) | Author: Sara Mahmood -->
 
+  function sendShipping(doc, $scope) {
+    $scope.ajaxMessage = "Sending shipping details...";
 
+    $.ajax({
+        url: SHIPPING_API_URL,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(doc),
+
+        success: function (response) {
+            $scope.$applyAsync(function () {
+                $scope.ajaxMessage =
+                    "Sent. Service replied: " + JSON.stringify(response);
+            });
+        },
+
+        error: function () {
+            $scope.$applyAsync(function () {
+                $scope.ajaxMessage =
+                    "The shipping service is not available yet (it is built in a later assignment). The JSON above is what will be sent.";
+            });
+        }
+    });
+}
   
   
 <!-- jQuery | Author: [ADD NAME] -->
