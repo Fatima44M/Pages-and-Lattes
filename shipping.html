@@ -220,7 +220,7 @@
 <!-- jQuery form message improvement | Author: Barsana Acharjoy -->
 <script>
   $(function () {
-    $("form[name='shipForm'] input, form[name='shipForm'] select").on("input change", function () {
+    $("#address, #city, #zip, #state, #carrier, #method").on("input change", function () {
       var scope = angular.element(document.body).scope();
 
       scope.$applyAsync(function () {
