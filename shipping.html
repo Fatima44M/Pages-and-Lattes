@@ -7,13 +7,13 @@
 
   <!-- ===================== TEAM AUTHORS =====================
        HTML (Page Structure) ................... Fatima Mohammed
-       CSS (Style and Cosmetics) ............... [ADD NAME]
+       CSS (Style and Cosmetics) ............... Dhruvi Mistry
        Bootstrap (Professional look) ........... Fatima Mohammed
        JavaScript (behaviors/field checks) ..... Sara Mahmood
        JSON Shipping Document .................. Barsana Acharjoy 
        jQuery .................................. Barsana Acharjoy 
        AJAX (send JSON to RESTful service) ..... Sara Mahmood
-       AngularJS (gets shipping details, shows JSON) ... [ADD NAME]
+       AngularJS (gets shipping details, shows JSON) ... Dhruvi Mistry
        ========================================================= -->
 
   <!-- Bootstrap (cloud source) | Author: Fatima Mohammed -->
@@ -23,33 +23,229 @@
   <!-- jQuery (cloud source) | Author: Barsana Acharjoy -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- AngularJS (cloud source) | Author: [ADD NAME] -->
+  <!-- AngularJS (cloud source) | Author: Dhruvi Mistry -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
 
-  <!-- CSS (Page Style and Cosmetics) | Author: [ADD NAME] -->
-  <style>
-    [ng-cloak] { display: none !important; }
-    :root { --pink:#f6c9d1; --pink-light:#fdf1f3; --rose:#a65d6f; --ink:#4a2f33; }
-    body { background: var(--pink-light); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
-    .site-nav { background: var(--pink); text-align: center; padding: 1.5rem 0; }
-    .site-nav a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 1.15rem; margin: 0 1.1rem; }
-    .site-nav a:hover, .site-nav a.active { color: var(--rose); }
-    .hero { text-align: center; color: #fff; padding: 4rem 1rem;
-            background: linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
-                        url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover; }
-    .hero h1 { font-weight: 700; font-size: 3rem; margin: 0; }
-    .hero p { font-style: italic; font-size: 1.25rem; margin: .5rem 0 0; }
-    .section-title { text-align: center; color: var(--rose); font-weight: 700; margin: 2.5rem 0 0; }
-    .section-title::after { content: ""; display: block; width: 90px; height: 3px; background: var(--rose); margin: .9rem auto 2rem; }
-    .card { border: 0; box-shadow: 0 2px 8px rgba(74,47,51,.12); }
-    .btn-primary { background: var(--rose); border-color: var(--rose); }
-    .btn-primary:hover { background: #8c4859; border-color: #8c4859; }
-    label .req { color: #c0392b; }
-    pre#jsonOutput { background: #fff; color: var(--ink); border: 2px solid var(--pink); padding: 1rem; border-radius: .5rem; min-height: 6rem; }
-    footer.site-footer { background: var(--pink); color: var(--ink); text-align: center; padding: 1.5rem 0; margin-top: 2.5rem; }
-  </style>
-</head>
-<body ng-controller="ShippingController">
+  <!-- CSS (Page Style and Cosmetics) | Author:Dhruvi Mistry -->
+  
+
+<style>
+    [ng-cloak] {
+        display: none !important;
+    }
+
+    :root {
+        --pink: #f6c9d1;
+        --pink-light: #fdf1f3;
+        --rose: #a65d6f;
+        --ink: #4a2f33;
+    }
+
+    body {
+        background: var(--pink-light);
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* Navigation */
+    .site-nav {
+        background: var(--pink);
+        text-align: center;
+        padding: 1.5rem 0;
+    }
+
+    .site-nav a {
+        color: var(--ink);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 0 1.1rem;
+        padding-bottom: 5px;
+        transition: color 0.3s ease;
+    }
+
+    .site-nav a:hover,
+    .site-nav a.active {
+        color: var(--rose);
+        border-bottom: 2px solid var(--rose);
+    }
+
+    /* Hero section */
+    .hero {
+        text-align: center;
+        color: #fff;
+        padding: 4rem 1rem;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background:
+            linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
+            url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover;
+    }
+
+    .hero h1 {
+        font-weight: 700;
+        font-size: 3rem;
+        margin: 0;
+    }
+
+    .hero p {
+        font-style: italic;
+        font-size: 1.25rem;
+        margin: .5rem 0 0;
+    }
+
+    /* Section heading */
+    .section-title {
+        text-align: center;
+        color: var(--rose);
+        font-weight: 700;
+        margin: 2.5rem 0 0;
+    }
+
+    .section-title::after {
+        content: "";
+        display: block;
+        width: 90px;
+        height: 3px;
+        background: var(--rose);
+        margin: .9rem auto 2rem;
+    }
+
+    /* Cards */
+    .card {
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(74,47,51,.12);
+        overflow: hidden;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    /* Form fields */
+    .form-control,
+    .form-select {
+        border: 1px solid #e3b2bd;
+        border-radius: 7px;
+        padding: 10px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--rose);
+        box-shadow: 0 0 0 0.2rem rgba(166,93,111,.15);
+    }
+
+    /* Submit button */
+    .btn-primary {
+        background: var(--rose);
+        border-color: var(--rose);
+        border-radius: 7px;
+        padding: 9px 22px;
+        transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: #8c4859;
+        border-color: #8c4859;
+    }
+
+    /* Clear button */
+    .btn-outline-secondary {
+        border-radius: 7px;
+        padding: 9px 22px;
+        margin-left: 5px;
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--pink);
+        color: var(--ink);
+        border-color: var(--rose);
+    }
+
+    /* Required fields and errors */
+    label .req {
+        color: #c0392b;
+    }
+
+    .invalid-feedback {
+        color: #c0392b;
+        font-size: .85rem;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    /* JSON document */
+    pre#jsonOutput {
+        background: #fff;
+        color: var(--ink);
+        border: 2px solid var(--pink);
+        padding: 1rem;
+        border-radius: .5rem;
+        min-height: 6rem;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font-size: .9rem;
+    }
+
+    /* Footer */
+    footer.site-footer {
+        background: var(--pink);
+        color: var(--ink);
+        text-align: center;
+        padding: 1.5rem 0;
+        margin-top: 2.5rem;
+    }
+
+    /* Mobile responsive design */
+    @media (max-width: 576px) {
+        .site-nav {
+            padding: 1rem .5rem;
+        }
+
+        .site-nav a {
+            display: inline-block;
+            font-size: .9rem;
+            margin: 5px 8px;
+        }
+
+        .hero {
+            min-height: 200px;
+            padding: 2rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .btn {
+            margin-bottom: 8px;
+        }
+
+        pre#jsonOutput {
+            font-size: .8rem;
+        }
+    }
+</style>
+
 
 <!-- HTML (Page Structure) and Bootstrap classes/layout | Author: Fatima Mohammed -->
 <nav class="site-nav">
@@ -73,67 +269,65 @@
       <div class="card"><div class="card-body">
         <h3 class="h5 mb-3">Shipping Destination</h3>
 
-        <!-- AngularJS form: ng-model reads each field from the DOM | Author: [ADD NAME] -->
-        <form name="shipForm" ng-submit="submitShipping()" novalidate>
-          <div class="mb-3">
-            <label for="address" class="form-label">Street Address <span class="req">*</span></label>
-            <input type="text" class="form-control" id="address" name="address" ng-model="form.address" required
-                   ng-class="{'is-invalid': (shipForm.address.$touched || submitted) && shipForm.address.$invalid}">
-            <div class="invalid-feedback">Street address is required.</div>
-          </div>
-          <div class="row">
-            <div class="col-md-5 mb-3">
-              <label for="city" class="form-label">City <span class="req">*</span></label>
-              <input type="text" class="form-control" id="city" name="city" ng-model="form.city" required
-                     ng-pattern="/^[a-zA-Z][a-zA-Z\s.'-]*$/"
-                     ng-class="{'is-invalid': (shipForm.city.$touched || submitted) && shipForm.city.$invalid}">
-              <div class="invalid-feedback" ng-if="shipForm.city.$error.required">City is required.</div>
-              <div class="invalid-feedback" ng-if="shipForm.city.$error.pattern">Use letters, spaces, apostrophes, or hyphens only.</div>
-            </div>
-            <div class="col-md-3 mb-3">
-              <label for="state" class="form-label">State <span class="req">*</span></label>
-              <select class="form-select" id="state" name="state" ng-model="form.state" required
-                      ng-options="s for s in states"
-                      ng-class="{'is-invalid': (shipForm.state.$touched || submitted) && shipForm.state.$invalid}">
-                <option value="">State</option>
-              </select>
-              <div class="invalid-feedback">Choose a state.</div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="zip" class="form-label">Zip <span class="req">*</span></label>
-              <input type="text" class="form-control" id="zip" name="zip" ng-model="form.zip" required
-                     ng-pattern="/^\d{5}(-\d{4})?$/" placeholder="12345"
-                     ng-class="{'is-invalid': (shipForm.zip.$touched || submitted) && shipForm.zip.$invalid}">
-              <div class="invalid-feedback">Enter a 5-digit zip (or 12345-6789).</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="carrier" class="form-label">Shipping Carrier <span class="req">*</span></label>
-              <select class="form-select" id="carrier" name="carrier" ng-model="form.carrier" required
-                      ng-options="c for c in carriers"
-                      ng-class="{'is-invalid': (shipForm.carrier.$touched || submitted) && shipForm.carrier.$invalid}">
-                <option value="">Select a carrier</option>
-              </select>
-              <div class="invalid-feedback">Choose a carrier.</div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="method" class="form-label">Shipping Method <span class="req">*</span></label>
-              <select class="form-select" id="method" name="method" ng-model="form.method" required
-                      ng-options="m for m in methods"
-                      ng-class="{'is-invalid': (shipForm.method.$touched || submitted) && shipForm.method.$invalid}">
-                <option value="">Select a method</option>
-              </select>
-              <div class="invalid-feedback">Choose a shipping method.</div>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <button type="button" class="btn btn-outline-secondary" ng-click="clearForm()">Clear</button>
-        </form>
-      </div></div>
+        <!-- AngularJS form: ng-model reads each field from the DOM | Author: Dhruvi Mistry -->
+       
+<form name="shipForm" ng-submit="submitShipping()" novalidate>
+
+    <div class="mb-3">
+        <label for="address" class="form-label">Street Address *</label>
+        <input type="text" class="form-control"
+               id="address" name="address"
+               ng-model="form.address" required>
     </div>
 
-    <div class="col-lg-6">
+    <div class="mb-3">
+        <label for="city" class="form-label">City *</label>
+        <input type="text" class="form-control"
+               id="city" name="city"
+               ng-model="form.city" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="state" class="form-label">State *</label>
+        <select class="form-select" id="state" name="state"
+                ng-model="form.state"
+                ng-options="s for s in states" required>
+            <option value="">State</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="zip" class="form-label">ZIP Code *</label>
+        <input type="text" class="form-control"
+               id="zip" name="zip"
+               ng-model="form.zip"
+               ng-pattern="/^\d{5}(-\d{4})?$/"
+               placeholder="12345" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="carrier" class="form-label">Shipping Carrier *</label>
+        <select class="form-select" id="carrier" name="carrier"
+                ng-model="form.carrier"
+                ng-options="c for c in carriers" required>
+            <option value="">Select a carrier</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="method" class="form-label">Shipping Method *</label>
+        <select class="form-select" id="method" name="method"
+                ng-model="form.method"
+                ng-options="m for m in methods" required>
+            <option value="">Select a method</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-outline-secondary"
+            ng-click="clearForm()">Clear</button>
+
+</form>
       <!-- JSON Shipping Document display | Authors: Barsana Acharjoy (JSON), [ADD NAME] (AngularJS binding) -->
       <div class="card"><div class="card-body">
         <h3 class="h5 mb-3">Shipping JSON Document</h3>
