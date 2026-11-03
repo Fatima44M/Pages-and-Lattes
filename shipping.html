@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" ng-app="shippingApp">
 <head>
@@ -10,419 +11,551 @@
        CSS (Style and Cosmetics) ............... Dhruvi Mistry
        Bootstrap (Professional look) ........... Fatima Mohammed
        JavaScript (behaviors/field checks) ..... Sara Mahmood
-       JSON Shipping Document .................. Barsana Acharjoy 
-       jQuery .................................. Barsana Acharjoy 
+       JSON Shipping Document .................. Barsana Acharjoy
+       jQuery .................................. Barsana Acharjoy
        AJAX (send JSON to RESTful service) ..... Sara Mahmood
        AngularJS (gets shipping details, shows JSON) ... Dhruvi Mistry
        ========================================================= -->
 
-  <!-- Bootstrap (cloud source) | Author: Fatima Mohammed -->
+  <!-- Bootstrap | Author: Fatima Mohammed -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- jQuery (cloud source) | Author: Barsana Acharjoy -->
+  <!-- jQuery | Author: Barsana Acharjoy -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- AngularJS (cloud source) | Author: Dhruvi Mistry -->
+  <!-- AngularJS | Author: Dhruvi Mistry -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
 
-  <!-- CSS (Page Style and Cosmetics) | Author:Dhruvi Mistry -->
-  
-
-<style>
+  <!-- CSS (Page Style and Cosmetics) | Author: Dhruvi Mistry -->
+  <style>
     [ng-cloak] {
-        display: none !important;
+      display: none !important;
     }
 
     :root {
-        --pink: #f6c9d1;
-        --pink-light: #fdf1f3;
-        --rose: #a65d6f;
-        --ink: #4a2f33;
+      --pink: #f6c9d1;
+      --pink-light: #fdf1f3;
+      --rose: #a65d6f;
+      --ink: #4a2f33;
     }
 
     body {
-        background: var(--pink-light);
-        color: var(--ink);
-        font-family: Georgia, "Times New Roman", serif;
-        line-height: 1.6;
-        margin: 0;
+      background: var(--pink-light);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+      margin: 0;
     }
 
     /* Navigation */
     .site-nav {
-        background: var(--pink);
-        text-align: center;
-        padding: 1.5rem 0;
+      background: var(--pink);
+      text-align: center;
+      padding: 1.5rem 0;
     }
 
     .site-nav a {
-        color: var(--ink);
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 1.15rem;
-        margin: 0 1.1rem;
-        padding-bottom: 5px;
-        transition: color 0.3s ease;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin: 0 1.1rem;
+      padding-bottom: 5px;
+      transition: color 0.3s ease;
     }
 
     .site-nav a:hover,
     .site-nav a.active {
-        color: var(--rose);
-        border-bottom: 2px solid var(--rose);
+      color: var(--rose);
+      border-bottom: 2px solid var(--rose);
     }
 
     /* Hero section */
     .hero {
-        text-align: center;
-        color: #fff;
-        padding: 4rem 1rem;
-        min-height: 220px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background:
-            linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
-            url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover;
+      text-align: center;
+      color: #fff;
+      padding: 4rem 1rem;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background:
+        linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
+        url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover;
     }
 
     .hero h1 {
-        font-weight: 700;
-        font-size: 3rem;
-        margin: 0;
+      font-weight: 700;
+      font-size: 3rem;
+      margin: 0;
     }
 
     .hero p {
-        font-style: italic;
-        font-size: 1.25rem;
-        margin: .5rem 0 0;
+      font-style: italic;
+      font-size: 1.25rem;
+      margin: .5rem 0 0;
     }
 
     /* Section heading */
     .section-title {
-        text-align: center;
-        color: var(--rose);
-        font-weight: 700;
-        margin: 2.5rem 0 0;
+      text-align: center;
+      color: var(--rose);
+      font-weight: 700;
+      margin: 2.5rem 0;
     }
 
     .section-title::after {
-        content: "";
-        display: block;
-        width: 90px;
-        height: 3px;
-        background: var(--rose);
-        margin: .9rem auto 2rem;
+      content: "";
+      display: block;
+      width: 90px;
+      height: 3px;
+      background: var(--rose);
+      margin: .9rem auto 2rem;
     }
 
     /* Cards */
     .card {
-        border: 0;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(74,47,51,.12);
-        overflow: hidden;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(74,47,51,.12);
+      height: 100%;
     }
 
     .card-body {
-        padding: 1.5rem;
+      padding: 1.5rem;
     }
 
     /* Form fields */
     .form-control,
     .form-select {
-        border: 1px solid #e3b2bd;
-        border-radius: 7px;
-        padding: 10px;
+      border: 1px solid #e3b2bd;
+      border-radius: 7px;
+      padding: 10px;
     }
 
     .form-control:focus,
     .form-select:focus {
-        border-color: var(--rose);
-        box-shadow: 0 0 0 0.2rem rgba(166,93,111,.15);
+      border-color: var(--rose);
+      box-shadow: 0 0 0 .2rem rgba(166,93,111,.15);
     }
 
-    /* Submit button */
-    .btn-primary {
-        background: var(--rose);
-        border-color: var(--rose);
-        border-radius: 7px;
-        padding: 9px 22px;
-        transition: background 0.3s ease;
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+      border-color: #c0392b;
     }
 
-    .btn-primary:hover {
-        background: #8c4859;
-        border-color: #8c4859;
-    }
-
-    /* Clear button */
-    .btn-outline-secondary {
-        border-radius: 7px;
-        padding: 9px 22px;
-        margin-left: 5px;
-    }
-
-    .btn-outline-secondary:hover {
-        background: var(--pink);
-        color: var(--ink);
-        border-color: var(--rose);
-    }
-
-    /* Required fields and errors */
+    /* Validation messages */
     label .req {
-        color: #c0392b;
+      color: #c0392b;
     }
 
     .invalid-feedback {
-        color: #c0392b;
-        font-size: .85rem;
-        font-weight: 600;
-        margin-top: 5px;
+      color: #c0392b;
+      font-size: .85rem;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--rose);
+      border-color: var(--rose);
+      border-radius: 7px;
+      padding: 9px 22px;
+      transition: background .3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #8c4859;
+      border-color: #8c4859;
+    }
+
+    .btn-outline-secondary {
+      border-radius: 7px;
+      padding: 9px 22px;
+      margin-left: 5px;
+    }
+
+    .btn-outline-secondary:hover {
+      background: var(--pink);
+      color: var(--ink);
+      border-color: var(--rose);
     }
 
     /* JSON document */
     pre#jsonOutput {
-        background: #fff;
-        color: var(--ink);
-        border: 2px solid var(--pink);
-        padding: 1rem;
-        border-radius: .5rem;
-        min-height: 6rem;
-        white-space: pre-wrap;
-        overflow-wrap: anywhere;
-        font-size: .9rem;
+      background: #fff;
+      color: var(--ink);
+      border: 2px solid var(--pink);
+      padding: 1rem;
+      border-radius: .5rem;
+      min-height: 10rem;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: .9rem;
     }
 
     /* Footer */
     footer.site-footer {
-        background: var(--pink);
-        color: var(--ink);
-        text-align: center;
-        padding: 1.5rem 0;
-        margin-top: 2.5rem;
+      background: var(--pink);
+      color: var(--ink);
+      text-align: center;
+      padding: 1.5rem 0;
+      margin-top: 2.5rem;
     }
 
     /* Mobile responsive design */
     @media (max-width: 576px) {
-        .site-nav {
-            padding: 1rem .5rem;
-        }
+      .site-nav {
+        padding: 1rem .5rem;
+      }
 
-        .site-nav a {
-            display: inline-block;
-            font-size: .9rem;
-            margin: 5px 8px;
-        }
+      .site-nav a {
+        display: inline-block;
+        font-size: .9rem;
+        margin: 5px 8px;
+      }
 
-        .hero {
-            min-height: 200px;
-            padding: 2rem 1rem;
-        }
+      .hero {
+        min-height: 200px;
+        padding: 2rem 1rem;
+      }
 
-        .hero h1 {
-            font-size: 2rem;
-        }
+      .hero h1 {
+        font-size: 2rem;
+      }
 
-        .hero p {
-            font-size: 1rem;
-        }
+      .hero p {
+        font-size: 1rem;
+      }
 
-        .section-title {
-            font-size: 1.5rem;
-        }
+      .section-title {
+        font-size: 1.5rem;
+      }
 
-        .card-body {
-            padding: 1rem;
-        }
+      .card-body {
+        padding: 1rem;
+      }
 
-        .btn {
-            margin-bottom: 8px;
-        }
+      .btn {
+        margin-bottom: 8px;
+      }
 
-        pre#jsonOutput {
-            font-size: .8rem;
-        }
+      pre#jsonOutput {
+        font-size: .8rem;
+      }
     }
-</style>
+  </style>
+</head>
 
 <body ng-controller="ShippingController">
 
-<!-- HTML (Page Structure) and Bootstrap classes/layout | Author: Fatima Mohammed -->
-<nav class="site-nav">
-  <a href="https://fatima44m.github.io/Pages-and-Lattes/#books">Books</a>
-  <a href="https://fatima44m.github.io/Pages-and-Lattes/#hours">Hours</a>
-  <a href="https://fatima44m.github.io/Pages-and-Lattes/#contact">Contact</a>
-  <a href="https://fatima44m.github.io/Pages-and-Lattes/signup.html">Sign Up</a>
-  <a href="product.html">Products</a>
-  <a href="shoppingcart.html">Shopping Cart</a>
-  <a href="shipping.html" class="active">Shipping</a>
-</nav>
-<header class="hero">
-  <h1>Pages &amp; Lattes</h1>
-  <p>Where every cup comes with a chapter</p>
-</header>
-<h2 class="section-title">Shipping Selection</h2>
+  <!-- HTML (Page Structure) | Author: Fatima Mohammed -->
+  <nav class="site-nav">
+    <a href="https://fatima44m.github.io/Pages-and-Lattes/#books">Books</a>
+    <a href="https://fatima44m.github.io/Pages-and-Lattes/#hours">Hours</a>
+    <a href="https://fatima44m.github.io/Pages-and-Lattes/#contact">Contact</a>
+    <a href="https://fatima44m.github.io/Pages-and-Lattes/signup.html">Sign Up</a>
+    <a href="product.html">Products</a>
+    <a href="shoppingcart.html">Shopping Cart</a>
+    <a href="shipping.html" class="active">Shipping</a>
+  </nav>
 
-<main class="container" ng-cloak>
-  <div class="row g-4">
-    <div class="col-lg-6">
-      <div class="card"><div class="card-body">
-        <h3 class="h5 mb-3">Shipping Destination</h3>
+  <header class="hero">
+    <h1>Pages &amp; Lattes</h1>
+    <p>Where every cup comes with a chapter</p>
+  </header>
 
-        <!-- AngularJS form: ng-model reads each field from the DOM | Author: Dhruvi Mistry -->
-       
-<form name="shipForm" ng-submit="submitShipping()" novalidate>
+  <h2 class="section-title">Shipping Selection</h2>
 
-    <div class="mb-3">
-        <label for="address" class="form-label">Street Address *</label>
-        <input type="text" class="form-control"
-               id="address" name="address"
-               ng-model="form.address" required>
+  <main class="container mb-5" ng-cloak>
+    <div class="row g-4 align-items-stretch">
+
+      <!-- Shipping form column -->
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="h5 mb-3">Shipping Destination</h3>
+
+            <!-- AngularJS form and validation | Author: Dhruvi Mistry -->
+            <form name="shipForm" ng-submit="submitShipping()" novalidate>
+
+              <!-- Street Address -->
+              <div class="mb-3">
+                <label for="address" class="form-label">
+                  Street Address <span class="req">*</span>
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="address"
+                       name="address"
+                       ng-model="form.address"
+                       ng-pattern="/.*\S.*/"
+                       ng-class="{'is-invalid': (shipForm.address.$touched || submitted) && shipForm.address.$invalid}"
+                       required>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.address.$touched || submitted) && shipForm.address.$error.required">
+                  Please enter your street address.
+                </div>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.address.$touched || submitted) && shipForm.address.$error.pattern">
+                  Address cannot contain only spaces.
+                </div>
+              </div>
+
+              <!-- City -->
+              <div class="mb-3">
+                <label for="city" class="form-label">
+                  City <span class="req">*</span>
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="city"
+                       name="city"
+                       ng-model="form.city"
+                       ng-pattern="/.*\S.*/"
+                       ng-class="{'is-invalid': (shipForm.city.$touched || submitted) && shipForm.city.$invalid}"
+                       required>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.city.$touched || submitted) && shipForm.city.$error.required">
+                  Please enter your city.
+                </div>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.city.$touched || submitted) && shipForm.city.$error.pattern">
+                  City cannot contain only spaces.
+                </div>
+              </div>
+
+              <!-- State -->
+              <div class="mb-3">
+                <label for="state" class="form-label">
+                  State <span class="req">*</span>
+                </label>
+                <select class="form-select"
+                        id="state"
+                        name="state"
+                        ng-model="form.state"
+                        ng-options="s for s in states"
+                        ng-class="{'is-invalid': (shipForm.state.$touched || submitted) && shipForm.state.$invalid}"
+                        required>
+                  <option value="">Select a state</option>
+                </select>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.state.$touched || submitted) && shipForm.state.$invalid">
+                  Please select a state.
+                </div>
+              </div>
+
+              <!-- ZIP Code -->
+              <div class="mb-3">
+                <label for="zip" class="form-label">
+                  ZIP Code <span class="req">*</span>
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="zip"
+                       name="zip"
+                       ng-model="form.zip"
+                       ng-pattern="/^\d{5}(-\d{4})?$/"
+                       placeholder="12345"
+                       ng-class="{'is-invalid': (shipForm.zip.$touched || submitted) && shipForm.zip.$invalid}"
+                       required>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.zip.$touched || submitted) && shipForm.zip.$error.required">
+                  Please enter your ZIP code.
+                </div>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.zip.$touched || submitted) && shipForm.zip.$error.pattern">
+                  Enter a valid ZIP code, such as 19001 or 19001-1234.
+                </div>
+              </div>
+
+              <!-- Shipping Carrier -->
+              <div class="mb-3">
+                <label for="carrier" class="form-label">
+                  Shipping Carrier <span class="req">*</span>
+                </label>
+                <select class="form-select"
+                        id="carrier"
+                        name="carrier"
+                        ng-model="form.carrier"
+                        ng-options="c for c in carriers"
+                        ng-class="{'is-invalid': (shipForm.carrier.$touched || submitted) && shipForm.carrier.$invalid}"
+                        required>
+                  <option value="">Select a carrier</option>
+                </select>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.carrier.$touched || submitted) && shipForm.carrier.$invalid">
+                  Please select a shipping carrier.
+                </div>
+              </div>
+
+              <!-- Shipping Method -->
+              <div class="mb-3">
+                <label for="method" class="form-label">
+                  Shipping Method <span class="req">*</span>
+                </label>
+                <select class="form-select"
+                        id="method"
+                        name="method"
+                        ng-model="form.method"
+                        ng-options="m for m in methods"
+                        ng-class="{'is-invalid': (shipForm.method.$touched || submitted) && shipForm.method.$invalid}"
+                        required>
+                  <option value="">Select a method</option>
+                </select>
+                <div class="invalid-feedback"
+                     ng-show="(shipForm.method.$touched || submitted) && shipForm.method.$invalid">
+                  Please select a shipping method.
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                Submit
+              </button>
+
+              <button type="button"
+                      class="btn btn-outline-secondary"
+                      ng-click="clearForm()">
+                Clear
+              </button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- JSON document column -->
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <!-- JSON Shipping Document | Author: Barsana Acharjoy -->
+            <!-- AngularJS JSON display | Author: Dhruvi Mistry -->
+            <h3 class="h5 mb-3">Shipping JSON Document</h3>
+
+            <pre id="jsonOutput">{{ shippingDocument ? (shippingDocument | json) : 'Submit the form to see the JSON document.' }}</pre>
+
+            <div id="ajaxMsg" class="form-text mt-2">
+              {{ ajaxMessage }}
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </main>
 
-    <div class="mb-3">
-        <label for="city" class="form-label">City *</label>
-        <input type="text" class="form-control"
-               id="city" name="city"
-               ng-model="form.city" required>
-    </div>
+  <footer class="site-footer">
+    <div>Open Daily: 7:00 AM &ndash; 8:00 PM</div>
+    <div>123 Chapter Lane, Booktown | (555) 123-4567</div>
+    <div>&copy; 2026 Pages &amp; Lattes</div>
+  </footer>
 
-    <div class="mb-3">
-        <label for="state" class="form-label">State *</label>
-        <select class="form-select" id="state" name="state"
-                ng-model="form.state"
-                ng-options="s for s in states" required>
-            <option value="">State</option>
-        </select>
-    </div>
+  <!-- AngularJS controller | Author: Dhruvi Mistry -->
+  <script>
+    var app = angular.module("shippingApp", []);
 
-    <div class="mb-3">
-        <label for="zip" class="form-label">ZIP Code *</label>
-        <input type="text" class="form-control"
-               id="zip" name="zip"
-               ng-model="form.zip"
-               ng-pattern="/^\d{5}(-\d{4})?$/"
-               placeholder="12345" required>
-    </div>
+    app.controller("ShippingController", ["$scope", function ($scope) {
 
-    <div class="mb-3">
-        <label for="carrier" class="form-label">Shipping Carrier *</label>
-        <select class="form-select" id="carrier" name="carrier"
-                ng-model="form.carrier"
-                ng-options="c for c in carriers" required>
-            <option value="">Select a carrier</option>
-        </select>
-    </div>
+      $scope.states = [
+        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC",
+        "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY",
+        "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT",
+        "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH",
+        "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT",
+        "VT", "VA", "WA", "WV", "WI", "WY"
+      ];
 
-    <div class="mb-3">
-        <label for="method" class="form-label">Shipping Method *</label>
-        <select class="form-select" id="method" name="method"
-                ng-model="form.method"
-                ng-options="m for m in methods" required>
-            <option value="">Select a method</option>
-        </select>
-    </div>
+      $scope.carriers = ["FedEx", "UPS", "DHL"];
+      $scope.methods = ["Overnight", "2nd Day", "Ground"];
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="button" class="btn btn-outline-secondary"
-            ng-click="clearForm()">Clear</button>
-
-</form>
-      <!-- JSON Shipping Document display | Authors: Barsana Acharjoy (JSON), [ADD NAME] (AngularJS binding) -->
-      <div class="card"><div class="card-body">
-        <h3 class="h5 mb-3">Shipping JSON Document</h3>
-        <pre id="jsonOutput">{{ shippingDocument ? (shippingDocument | json) : 'Submit the form to see the JSON document.' }}</pre>
-        <div id="ajaxMsg" class="form-text mt-2">{{ ajaxMessage }}</div>
-      </div></div>
-    </div>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div>Open Daily: 7:00 AM &ndash; 8:00 PM</div>
-  <div>123 Chapter Lane, Booktown | (555) 123-4567</div>
-  <div>&copy; 2026 Pages &amp; Lattes</div>
-</footer>
-
-<!-- AngularJS controller (gets shipping details from the DOM, builds and shows the JSON) | Author: [ADD NAME] -->
-<!-- JSON Shipping Document structure | Author: Barsana Acharjoy -->
-<script>
-  var app = angular.module("shippingApp", []);
-
-  app.controller("ShippingController", ["$scope", function ($scope) {
-    $scope.states = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
-    $scope.carriers = ["FedEx", "UPS", "DHL"];
-    $scope.methods = ["Overnight", "2nd Day", "Ground"];
-    $scope.form = {};
-    $scope.submitted = false;
-    $scope.shippingDocument = null;
-    $scope.ajaxMessage = "";
-
-    $scope.submitShipping = function () {
-      $scope.submitted = true;
-      if ($scope.shipForm.$invalid) { return; }
-
-      // JSON shipping document with name:value pairs
-      $scope.shippingDocument = {
-        shippingDestination: {
-          address: $scope.form.address.trim(),
-          city: $scope.form.city.trim(),
-          state: $scope.form.state,
-          zip: $scope.form.zip
-        },
-        shippingCarrier: $scope.form.carrier,
-        shippingMethod: $scope.form.method
-      };
-      sendShipping($scope.shippingDocument, $scope);
-    };
-
-    $scope.clearForm = function () {
       $scope.form = {};
       $scope.submitted = false;
       $scope.shippingDocument = null;
       $scope.ajaxMessage = "";
-      $scope.shipForm.$setPristine();
-      $scope.shipForm.$setUntouched();
-    };
-  }]);
-</script>
 
+      // Submit shipping form and create JSON document
+      $scope.submitShipping = function () {
+        $scope.submitted = true;
 
-<!-- jQuery AJAX helper | Author: Sara Mahmood -->
-<script>
-  // The NodeJS RESTful API is built in a later assignment. Change this URL then.
-  var SHIPPING_API_URL = "http://localhost:3000/api/shipping";
+        if ($scope.shipForm.$invalid) {
+          $scope.ajaxMessage = "Please correct the highlighted fields.";
+          return;
+        }
 
-  function sendShipping(doc, $scope) {
-    $scope.ajaxMessage = "Sending shipping details...";
-    $.ajax({
-      url: SHIPPING_API_URL,
-      type: "POST",
-      contentType: "application/json",
-      data: JSON.stringify(doc),
-      success: function (response) {
-        $scope.$applyAsync(function () { $scope.ajaxMessage = "Sent. Service replied: " + JSON.stringify(response); });
-      },
-      error: function () {
-        $scope.$applyAsync(function () { $scope.ajaxMessage = "The shipping service is not available yet (it is built in a later assignment). The JSON above is what will be sent."; });
-      }
-    });
-  }
-</script>
+        $scope.shippingDocument = {
+          shippingDestination: {
+            address: $scope.form.address.trim(),
+            city: $scope.form.city.trim(),
+            state: $scope.form.state,
+            zip: $scope.form.zip
+          },
+          shippingCarrier: $scope.form.carrier,
+          shippingMethod: $scope.form.method
+        };
 
+        sendShipping($scope.shippingDocument, $scope);
+      };
 
-<!-- jQuery form message improvement | Author: Barsana Acharjoy -->
-<script>
-  $(function () {
-    $("#address, #city, #zip, #state, #carrier, #method").on("input change", function () {
-      var scope = angular.element(document.body).scope();
+      // Clear form and reset validation
+      $scope.clearForm = function () {
+        $scope.form = {};
+        $scope.submitted = false;
+        $scope.shippingDocument = null;
+        $scope.ajaxMessage = "";
 
-      scope.$applyAsync(function () {
-        scope.ajaxMessage = "";
+        $scope.shipForm.$setPristine();
+        $scope.shipForm.$setUntouched();
+      };
+
+    }]);
+  </script>
+
+  <!-- jQuery AJAX helper | Author: Sara Mahmood -->
+  <script>
+    // The NodeJS RESTful API is developed in a later assignment.
+    var SHIPPING_API_URL = "http://localhost:3000/api/shipping";
+
+    function sendShipping(doc, $scope) {
+      $scope.ajaxMessage = "Sending shipping details...";
+
+      $.ajax({
+        url: SHIPPING_API_URL,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(doc),
+
+        success: function (response) {
+          $scope.$applyAsync(function () {
+            $scope.ajaxMessage =
+              "Sent. Service replied: " + JSON.stringify(response);
+          });
+        },
+
+        error: function () {
+          $scope.$applyAsync(function () {
+            $scope.ajaxMessage =
+              "The shipping service is not available yet. The JSON above is what will be sent.";
+          });
+        }
+      });
+    }
+  </script>
+
+  <!-- jQuery form message improvement | Author: Barsana Acharjoy -->
+  <script>
+    $(function () {
+      $("#address, #city, #zip, #state, #carrier, #method").on("input change", function () {
+        var scope = angular.element(document.body).scope();
+
+        scope.$applyAsync(function () {
+          scope.ajaxMessage = "";
+        });
       });
     });
-  });
-</script>
+  </script>
+
 </body>
 </html>
