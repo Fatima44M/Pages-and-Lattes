@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="storefrontApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Handle Returns | Pages &amp; Lattes</title>
+
+  <!-- ===================== TEAM AUTHORS =====================
+       HTML (Page Structure) ................... Fatima Mohammed
+       CSS (Page Style and Cosmetics) .......... Dhruvi Mistry
+       Bootstrap (Professional look) ........... Fatima Mohammed
+       JavaScript (behaviors/field checks) ..... Sara Mahmood
+       JSON Returns Collection ................. Barsana Acharjoy
+       jQuery .................................. Sara Mahmood
+       AJAX (send JSON to RESTful service) ..... Dhruvi Mistry
+       AngularJS (call the restful services) ... Dhruvi Mistry
+       NodeJS (restful services) ............... [ADD NAME]
+       ========================================================= -->
+
+  <!-- Bootstrap (cloud source) | Author: Fatima Mohammed -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jQuery (cloud source) | Author: Sara Mahmood -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- AngularJS (cloud source) | Author: Dhruvi Mistry -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+  <!-- CSS (Page Style and Cosmetics) | Author: Dhruvi Mistry -->
+  <style>
+    :root { --pink:#f6c9d1; --pink-light:#fdf1f3; --rose:#a65d6f; --ink:#4a2f33; }
+    body { background: var(--pink-light); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
+    .site-nav { background: var(--pink); text-align: center; padding: 1.5rem 0; }
+    .site-nav a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 1.15rem; margin: 0 1.1rem; }
+    .site-nav a:hover, .site-nav a.active { color: var(--rose); }
+    .hero { text-align: center; color: #fff; padding: 4rem 1rem;
+            background: linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)),
+                        url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover; }
+    .hero h1 { font-weight: 700; font-size: 3rem; margin: 0; }
+    .hero p { font-style: italic; font-size: 1.25rem; margin: .5rem 0 0; }
+    .section-title { text-align: center; color: var(--rose); font-weight: 700; margin: 2.5rem 0 0; }
+    .section-title::after { content: ""; display: block; width: 90px; height: 3px; background: var(--rose); margin: .9rem auto 2rem; }
+    .card { border: 0; box-shadow: 0 2px 8px rgba(74,47,51,.12); }
+    .btn-primary { background: var(--rose); border-color: var(--rose); }
+    .btn-primary:hover { background: #8c4859; border-color: #8c4859; }
+    label .req { color: #c0392b; }
+    pre.json-box { background: #fff; color: var(--ink); border: 2px solid var(--pink); padding: 1rem; border-radius: .5rem; min-height: 6rem; }
+    footer.site-footer { background: var(--pink); color: var(--ink); text-align: center; padding: 1.5rem 0; margin-top: 2.5rem; }
+  </style>
+</head>
+<body ng-controller="ReturnsController">
+
+<!-- HTML (Page Structure) and Bootstrap classes/layout | Author: Fatima Mohammed -->
+<nav class="site-nav">
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#books">Books</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#hours">Hours</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#contact">Contact</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/signup.html">Sign Up</a>
+  <a href="product.html">Products</a>
+  <a href="shoppingcart.html">Shopping Cart</a>
+  <a href="shipping.html">Shipping</a>
+  <a href="billing.html">Billing</a>
+  <a href="returns.html" class="active">Returns</a>
+</nav>
+<header class="hero">
+  <h1>Pages &amp; Lattes</h1>
+  <p>Where every cup comes with a chapter</p>
+</header>
+<h2 class="section-title">Handle Returns</h2>
+
+<main class="container">
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card"><div class="card-body">
+        <h3 class="h5 mb-3">Find a Product to Return</h3>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="searchBox" placeholder="Search your purchased products">
+          <button class="btn btn-secondary" id="clearSearch" type="button">Clear</button>
+        </div>
+        <div id="searchMsg" class="form-text mb-2"></div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Id</th><th>Description</th><th class="text-end">Price</th><th></th></tr></thead>
+            <tbody id="productBody">
+              <!-- TODO (jQuery teammate): fill with the shopper's products from the JSON collection -->
+            </tbody>
+          </table>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card mb-4"><div class="card-body">
+        <h3 class="h5 mb-3">Items Being Returned</h3>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead><tr><th>Item</th><th style="width:90px">Qty</th><th>Reason</th><th></th></tr></thead>
+            <tbody id="returnBody">
+              <tr><td colspan="4" class="text-muted text-center">No items added yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Reason options used for each returned item (JavaScript teammate: validate that one is chosen) -->
+        <div class="mb-3" style="max-width: 16rem;">
+          <label for="reasonChoice" class="form-label">Reason for Return <span class="req">*</span></label>
+          <select class="form-select" id="reasonChoice">
+            <option value="">Select a reason</option>
+            <option>Wrong item</option>
+            <option>Damaged</option>
+            <option>Changed my mind</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div id="returnMsg" class="text-danger small mb-2"></div>
+        <button class="btn btn-primary" id="submitReturn" type="button">Submit Return</button>
+        <button class="btn btn-outline-secondary" id="clearReturn" type="button">Clear</button>
+        <div id="statusMsg" class="form-text mt-2"></div>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h3 class="h5 mb-3">Returns JSON Document</h3>
+        <pre id="jsonOutput" class="json-box">Add an item and submit to see the JSON document.</pre>
+      </div></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div>Open Daily: 7:00 AM &ndash; 8:00 PM</div>
+  <div>123 Chapter Lane, Booktown | (555) 123-4567</div>
+  <div>&copy; 2026 Pages &amp; Lattes</div>
+</footer>
+
+
+<!-- JSON returns product collection | Author: Barsana Acharjoy -->
+<script>
+  // Products available for the shopper to return
+  window.productCollection = {
+    products: [
+      {
+        productId: "P100",
+        productDescription: "House Latte",
+        productPrice: 4.50
+      },
+      {
+        productId: "P200",
+        productDescription: "Butter Croissant",
+        productPrice: 3.25
+      },
+      {
+        productId: "P300",
+        productDescription: "Used Paperback Novel",
+        productPrice: 8.00
+      },
+      {
+        productId: "P400",
+        productDescription: "Pages & Lattes Mug",
+        productPrice: 12.00
+      }
+    ]
+  };
+
+  // Build the returns JSON document
+  function buildReturnsDocument(items) {
+    return {
+      returnId: "RET-" + Date.now(),
+      items: items.map(function (item) {
+        return {
+          productId: item.productId,
+          productDescription: item.productDescription,
+          quantity: item.quantity,
+          reason: item.reason
+        };
+      })
+    };
+  }
+</script>
+
+
+<!-- JavaScript (validQty and validReason) | Author: Sara Mahmood -->
+<script>
+  // Quantity must be a whole number from 1 to 99; a reason must be chosen
+  function validQty(q) { return /^\d+$/.test(String(q)) && Number(q) >= 1 && Number(q) <= 99; }
+  function validReason(r) { return r !== ""; }
+  function money(n) { return "$" + Number(n).toFixed(2); }
+</script>
+
+<!-- jQuery (search filter, Add/Remove, quantity, Submit Return and Clear handlers) | Author: Sara Mahmood -->
+<script>
+  // Uses the JSON teammate's productCollection if it exists; otherwise a small temporary sample list.
+  var productList = (window.productCollection && window.productCollection.products) || [
+    { productId: "P100", productDescription: "House Latte",          productPrice: 4.50 },
+    { productId: "P200", productDescription: "Butter Croissant",     productPrice: 3.25 },
+    { productId: "P300", productDescription: "Used Paperback Novel", productPrice: 8.00 },
+    { productId: "P400", productDescription: "Pages & Lattes Mug",   productPrice: 12.00 }
+  ];
+  var returnItems = [];
+
+  function renderProducts(list) {
+    var $b = $("#productBody").empty();
+    $.each(list, function (i, p) {
+      $b.append($("<tr>")
+        .append($("<td>").text(p.productId))
+        .append($("<td>").text(p.productDescription))
+        .append($("<td>").addClass("text-end").text(money(p.productPrice)))
+        .append($("<td>").append($("<button>").attr("type", "button").addClass("btn btn-primary btn-sm add").attr("data-id", p.productId).text("Add"))));
+    });
+    $("#searchMsg").text(list.length + " product(s) shown.");
+  }
+
+  function renderReturns() {
+    var $b = $("#returnBody").empty();
+    if (returnItems.length === 0) {
+      $b.append('<tr><td colspan="4" class="text-muted text-center">No items added yet.</td></tr>');
+    }
+    $.each(returnItems, function (i, it) {
+      $b.append($("<tr>")
+        .append($("<td>").text(it.productDescription).append($("<div>").addClass("small text-muted").text(it.productId)))
+        .append($("<td>").append($("<input>").attr({ type: "number", min: 1, max: 99 }).addClass("form-control form-control-sm qty").attr("data-id", it.productId).val(it.quantity)))
+        .append($("<td>").text(it.reason))
+        .append($("<td>").append($("<button>").attr("type", "button").addClass("btn btn-outline-danger btn-sm remove").attr("data-id", it.productId).text("Remove"))));
+    });
+  }
+
+  // Search as the user types
+  $("#searchBox").on("input keyup", function () {
+    var term = $.trim($(this).val()).toLowerCase();
+    renderProducts($.grep(productList, function (p) {
+      return (p.productId + " " + p.productDescription).toLowerCase().indexOf(term) !== -1;
+    }));
+  });
+  $("#clearSearch").on("click", function () { $("#searchBox").val(""); renderProducts(productList); });
+
+  // Add a product to the returns list (a reason must be chosen first)
+  $(document).on("click", ".add", function () {
+    var reason = $("#reasonChoice").val();
+    if (!validReason(reason)) { $("#returnMsg").text("Choose a reason for the return before adding an item."); return; }
+    $("#returnMsg").text("");
+    var id = $(this).attr("data-id");
+    var existing = $.grep(returnItems, function (it) { return it.productId === id; })[0];
+    if (existing) {
+      if (existing.quantity < 99) { existing.quantity++; }
+    } else {
+      var p = $.grep(productList, function (x) { return x.productId === id; })[0];
+      returnItems.push({ productId: p.productId, productDescription: p.productDescription, unitPrice: p.productPrice, quantity: 1, reason: reason });
+    }
+    renderReturns();
+  });
+
+  // Change a quantity (validated) or remove an item
+  $(document).on("change", ".qty", function () {
+    var id = $(this).attr("data-id"), q = $(this).val();
+    var item = $.grep(returnItems, function (it) { return it.productId === id; })[0];
+    if (!validQty(q)) {
+      $("#returnMsg").text("Quantity must be a whole number from 1 to 99.");
+      $(this).val(item.quantity);
+      return;
+    }
+    $("#returnMsg").text("");
+    item.quantity = parseInt(q, 10);
+  });
+  $(document).on("click", ".remove", function () {
+    var id = $(this).attr("data-id");
+    returnItems = $.grep(returnItems, function (it) { return it.productId !== id; });
+    renderReturns();
+  });
+
+  // Submit validates the return and asks the AngularJS controller to send it.
+  $("#submitReturn").on("click", function () {
+    if (returnItems.length === 0) { $("#returnMsg").text("Add at least one item to return."); return; }
+    $("#returnMsg").text("");
+    var doc = buildReturnsDocument(returnItems);
+    $("#jsonOutput").text(JSON.stringify(doc, null, 2));
+    var scope = angular.element(document.body).scope();
+    if (scope && scope.submitReturn) {
+      scope.submitReturn(doc);
+    } else {
+      $("#statusMsg").text("AngularJS controller is not available. Please refresh the page.");
+    }
+  });
+  $("#clearReturn").on("click", function () {
+    returnItems = [];
+    $("#reasonChoice").val("");
+    $("#returnMsg, #statusMsg").text("");
+    $("#jsonOutput").text("Add an item and submit to see the JSON document.");
+    renderReturns();
+  });
+
+  $(function () { renderProducts(productList); renderReturns(); });
+</script>
+
+<!-- AngularJS (call the RESTful services) | Author: Dhruvi Mistry -->
+<script>
+  // Change this URL if your teammate's NodeJS server uses a different host or route.
+  // The matching server endpoint must accept POST /api/returns and JSON.
+  angular.module("storefrontApp", [])
+    .controller("ReturnsController", ["$scope", "$http", function ($scope, $http) {
+      $scope.isSubmittingReturn = false;
+
+      $scope.submitReturn = function (returnDocument) {
+        if ($scope.isSubmittingReturn) return;
+        $scope.isSubmittingReturn = true;
+        $("#statusMsg").removeClass("text-danger text-success").text("Sending return to the server...");
+
+        $http.post("http://localhost:3000/api/returns", returnDocument, {
+          headers: { "Content-Type": "application/json" }
+        }).then(function (response) {
+          $("#statusMsg").removeClass("text-danger").addClass("text-success")
+            .text((response.data && response.data.message) || "Return submitted successfully.");
+        }).catch(function (error) {
+          var message = (error.data && (error.data.message || error.data.error))
+            || "Could not send the return. Check that the NodeJS server is running and the API URL is correct.";
+          $("#statusMsg").removeClass("text-success").addClass("text-danger").text(message);
+          console.error("Return submission failed:", error);
+        }).finally(function () {
+          $scope.isSubmittingReturn = false;
+        });
+      };
+    }]);
+</script>
+
+<!-- AJAX (jQuery transport for the returns JSON) | Author: Dhruvi Mistry -->
+<script>
+  // Reusable jQuery AJAX version of the same request. The page currently submits
+  // through the AngularJS $http controller above, so one click sends only one POST.
+  // Use this function instead of $http.post if your team chooses jQuery AJAX.
+  function sendReturnsWithAjax(returnDocument, onSuccess, onError) {
+    return $.ajax({
+      url: "http://localhost:3000/api/returns",
+      method: "POST",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      data: JSON.stringify(returnDocument)
+    }).done(function (response) {
+      if (typeof onSuccess === "function") onSuccess(response);
+    }).fail(function (xhr, status, error) {
+      console.error("AJAX return submission failed:", status, error);
+      if (typeof onError === "function") onError(xhr);
+    });
+  }
+</script>
+
+<!-- NodeJS (restful services that receive the JSON collections) | Author: [ADD NAME] -->
+<!-- NodeJS runs on the server (server.js), not in this page. -->
+</body>
+</html>

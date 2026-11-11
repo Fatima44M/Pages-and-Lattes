@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="storefrontApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Billing Details | Pages &amp; Lattes</title>
+    <!-- ===================== TEAM AUTHORS =====================
+         HTML (Page Structure) ................... Fatima Mohammed
+         CSS (Page Style and Cosmetics) .......... Dhruvi Mistry
+         Bootstrap (Professional look) ........... Fatima Mohammed
+         JavaScript (behaviors/field checks) ..... Sara Mahmood
+         JSON Billing Document ................... [Barsana Acharjoy]
+         jQuery .................................. Sara Mahmood
+         AJAX (send JSON to RESTful service) ..... Dhruvi Mistry
+         AngularJS (call the restful services) ... Dhruvi Mistry
+         ========================================================= -->
+    <!-- Bootstrap (cloud source) | Author: Fatima Mohammed -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery (cloud source) | Author: Sara Mahmood -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- AngularJS (cloud source) | Author: Dhruvi Mistry -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <!-- CSS (Page Style and Cosmetics) | Author: Dhruvi Mistry -->
+    <style>
+        :root {
+            --pink: #f6c9d1;
+            --pink-light: #fdf1f3;
+            --rose: #a65d6f;
+            --ink: #4a2f33;
+        }
+
+        body {
+            background: var(--pink-light);
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .site-nav {
+            background: var(--pink);
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+            .site-nav a {
+                color: var(--ink);
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 1.15rem;
+                margin: 0 1.1rem;
+            }
+
+                .site-nav a:hover, .site-nav a.active {
+                    color: var(--rose);
+                }
+
+        .hero {
+            text-align: center;
+            color: #fff;
+            padding: 4rem 1rem;
+            background: linear-gradient(rgba(40,25,20,.45), rgba(40,25,20,.45)), url("https://fatima44m.github.io/Pages-and-Lattes/Pages___Lattes_Main-Hero_Photo.jpg") center/cover;
+        }
+
+            .hero h1 {
+                font-weight: 700;
+                font-size: 3rem;
+                margin: 0;
+            }
+
+            .hero p {
+                font-style: italic;
+                font-size: 1.25rem;
+                margin: .5rem 0 0;
+            }
+
+        .section-title {
+            text-align: center;
+            color: var(--rose);
+            font-weight: 700;
+            margin: 2.5rem 0 0;
+        }
+
+            .section-title::after {
+                content: "";
+                display: block;
+                width: 90px;
+                height: 3px;
+                background: var(--rose);
+                margin: .9rem auto 2rem;
+            }
+
+        .card {
+            border: 0;
+            box-shadow: 0 2px 8px rgba(74,47,51,.12);
+        }
+
+        .btn-primary {
+            background: var(--rose);
+            border-color: var(--rose);
+        }
+
+            .btn-primary:hover {
+                background: #8c4859;
+                border-color: #8c4859;
+            }
+
+        label .req {
+            color: #c0392b;
+        }
+
+        pre.json-box {
+            background: #fff;
+            color: var(--ink);
+            border: 2px solid var(--pink);
+            padding: 1rem;
+            border-radius: .5rem;
+            min-height: 6rem;
+        }
+
+        footer.site-footer {
+            background: var(--pink);
+            color: var(--ink);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2.5rem;
+        }
+    </style>
+</head>
+<body ng-controller="BillingController">
+<!-- HTML (Page Structure) and Bootstrap classes/layout | Author: Fatima Mohammed -->
+<nav class="site-nav">
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#books">Books</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#hours">Hours</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/#contact">Contact</a>
+  <a href="https://fatima44m.github.io/Pages-and-Lattes/signup.html">Sign Up</a>
+  <a href="product.html">Products</a>
+  <a href="shoppingcart.html">Shopping Cart</a>
+  <a href="shipping.html">Shipping</a>
+  <a href="billing.html" class="active">Billing</a>
+  <a href="returns.html">Returns</a>
+</nav>
+<header class="hero">
+  <h1>Pages &amp; Lattes</h1>
+  <p>Where every cup comes with a chapter</p>
+</header>
+<h2 class="section-title">Billing Details</h2>
+<main class="container">
+  <div class="row g-4 justify-content-center">
+    <div class="col-lg-6">
+      <div class="card"><div class="card-body">
+        <h3 class="h5 mb-3">Billing Details</h3>
+        <form id="billingForm" novalidate>
+          <div class="mb-3">
+            <label for="cardName" class="form-label">Name on Card <span class="req">*</span></label>
+            <input type="text" class="form-control" id="cardName" name="cardName">
+            <div class="invalid-feedback">Name on card is required.</div>
+          </div>
+          <div class="mb-3">
+            <label for="billAddress" class="form-label">Billing Street Address <span class="req">*</span></label>
+            <input type="text" class="form-control" id="billAddress" name="billAddress">
+            <div class="invalid-feedback">Billing address is required.</div>
+          </div>
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="billCity" class="form-label">City <span class="req">*</span></label>
+              <input type="text" class="form-control" id="billCity" name="billCity">
+              <div class="invalid-feedback">City is required.</div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="billState" class="form-label">State <span class="req">*</span></label>
+              <select class="form-select" id="billState" name="billState">
+                <option value="">State</option>
+                <!-- TODO (JavaScript/jQuery teammate): fill in the state options -->
+              </select>
+              <div class="invalid-feedback">Choose a state.</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="billZip" class="form-label">Zip <span class="req">*</span></label>
+              <input type="text" class="form-control" id="billZip" name="billZip" placeholder="12345">
+              <div class="invalid-feedback">Enter a 5-digit zip.</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="cardType" class="form-label">Card Type <span class="req">*</span></label>
+              <select class="form-select" id="cardType" name="cardType">
+                <option value="">Select a card</option>
+                <option>Visa</option>
+                <option>Mastercard</option>
+                <option>American Express</option>
+              </select>
+              <div class="invalid-feedback">Choose a card type.</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="cardNumber" class="form-label">Card Number <span class="req">*</span></label>
+              <input type="text" class="form-control" id="cardNumber" name="cardNumber" inputmode="numeric" placeholder="Digits only">
+              <div class="invalid-feedback">Enter a valid card number.</div>
+            </div>
+          </div>
+          <div class="mb-3" style="max-width: 12rem;">
+            <label for="cardExpiry" class="form-label">Expires (MM/YY) <span class="req">*</span></label>
+            <input type="text" class="form-control" id="cardExpiry" name="cardExpiry" placeholder="MM/YY">
+            <div class="invalid-feedback">Enter the expiration as MM/YY.</div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-outline-secondary">Clear</button>
+        </form>
+      </div></div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card"><div class="card-body">
+        <h3 class="h5 mb-3">Billing JSON Document</h3>
+        <pre id="jsonOutput" class="json-box">Submit the form to see the JSON document.</pre>
+        <div id="statusMsg" class="form-text mt-2"></div>
+      </div></div>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div>Open Daily: 7:00 AM &ndash; 8:00 PM</div>
+  <div>123 Chapter Lane, Booktown | (555) 123-4567</div>
+  <div>&copy; 2026 Pages &amp; Lattes</div>
+</footer>
+<!-- JSON billing document | Author: Barsana Acharjoy -->
+<script>
+  function buildBillingDocument() {
+    return {
+      billingName: $("#cardName").val().trim(),
+      billingAddress: {
+        address: $("#billAddress").val().trim(),
+        city: $("#billCity").val().trim(),
+        state: $("#billState").val(),
+        zip: $("#billZip").val().trim()
+      },
+      cardType: $("#cardType").val(),
+      cardNumberLast4: $("#cardNumber").val().replace(/\D/g, "").slice(-4),
+      cardExpiry: $("#cardExpiry").val().trim()
+    };
+  }
+</script>
+<!-- JavaScript (billingRules and validateBilling) | Author: Sara Mahmood -->
+<script>
+  var US_STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+  // Card must not be expired (MM/YY)
+  function notExpired(v) {
+    var m = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(v);
+    if (!m) { return false; }
+    var now = new Date();
+    var year = 2000 + parseInt(m[2], 10), month = parseInt(m[1], 10);
+    return year > now.getFullYear() || (year === now.getFullYear() && month >= now.getMonth() + 1);
+  }
+  // One rule per field id. Each returns true when the value is OK.
+  var billingRules = {
+    cardName:    function (v) { return v.length > 0; },
+    billAddress: function (v) { return v.length > 0; },
+    billCity:    function (v) { return v.length > 0; },
+    billState:   function (v) { return v !== ""; },
+    billZip:     function (v) { return /^\d{5}$/.test(v); },
+    cardType:    function (v) { return v !== ""; },
+    cardNumber:  function (v) { return /^\d{13,19}$/.test(v.replace(/[\s-]/g, "")); },
+    cardExpiry:  notExpired
+  };
+  function validateBilling() {
+    var allGood = true;
+    $.each(billingRules, function (id, test) {
+      var $f = $("#" + id);
+      var good = test($.trim($f.val()));
+      $f.toggleClass("is-invalid", !good).toggleClass("is-valid", good);
+      if (!good) { allGood = false; }
+    });
+    return allGood;
+  }
+</script>
+<!-- jQuery (state dropdown, Submit and Clear handlers) | Author: Sara Mahmood -->
+<script>
+  $(function () {
+    $.each(US_STATES, function (i, s) { $("#billState").append($("<option>").text(s)); });
+  });
+  $("#billingForm").on("submit", function (e) {
+    e.preventDefault();
+    if (!validateBilling()) {
+      $("#statusMsg").text("Please fix the highlighted fields.");
+      return;
+    }
+    // Use the JSON builder from the JSON teammate if it exists; otherwise a simple temporary version.
+    var doc = (typeof buildBillingDocument === "function") ? buildBillingDocument() : {
+      billingName: $.trim($("#cardName").val()),
+      billingAddress: {
+        address: $.trim($("#billAddress").val()),
+        city: $.trim($("#billCity").val()),
+        state: $("#billState").val(),
+        zip: $.trim($("#billZip").val())
+      },
+      cardType: $("#cardType").val(),
+      cardNumberLast4: $("#cardNumber").val().replace(/\D/g, "").slice(-4),   // never show the full card number
+      cardExpiry: $.trim($("#cardExpiry").val())
+    };
+    $("#jsonOutput").text(JSON.stringify(doc, null, 2));
+
+    // Send the billing JSON using the AngularJS controller.
+    var billingScope = angular.element(document.body).scope();
+    if (billingScope && billingScope.sendBilling) {
+      billingScope.$applyAsync(function () {
+        billingScope.sendBilling(doc);
+      });
+    } else {
+      $("#statusMsg").text("Billing service is not available.");
+    }
+  });
+  $("#billingForm").on("reset", function () {
+    setTimeout(function () {
+      $("#billingForm .is-valid, #billingForm .is-invalid").removeClass("is-valid is-invalid");
+      $("#jsonOutput").text("Submit the form to see the JSON document.");
+      $("#statusMsg").text("");
+    }, 0);
+  });
+</script>
+<!-- AngularJS (call the RESTful services) | Author: Dhruvi Mistry -->
+<script>
+  // Change this URL if your team's NodeJS server uses a different route.
+  var BILLING_API_URL = "http://localhost:3000/api/billing";
+  angular.module("storefrontApp", [])
+    .controller("BillingController", ["$scope", "$http", function ($scope, $http) {
+      $scope.sendBilling = function (billingDocument) {
+        $scope.billingSending = true;
+        $("#statusMsg").removeClass("text-danger text-success")
+          .text("Sending billing details...");
+        // Only the safe billing JSON document is sent (card number is limited to last 4 digits).
+        $http.post(BILLING_API_URL, billingDocument)
+          .then(function (response) {
+            $("#statusMsg").removeClass("text-danger").addClass("text-success")
+              .text("Billing details were sent successfully.");
+          })
+          .catch(function (error) {
+            $("#statusMsg").removeClass("text-success").addClass("text-danger")
+              .text("Could not send billing details. Check that the NodeJS server is running.");
+            console.error("Billing request failed:", error);
+          })
+          .finally(function () {
+            $scope.billingSending = false;
+          });
+      };
+    }]);
+</script>
+<!-- AJAX (jQuery AJAX transport for the billing JSON) | Author: Dhruvi Mistry -->
+<script>
+  // Alternative jQuery AJAX function for use if the team chooses jQuery instead of AngularJS.
+  // Do not call this as well as sendBilling() for the same submission.
+  function sendBillingWithAjax(billingDocument) {
+    return $.ajax({
+      url: BILLING_API_URL,
+      method: "POST",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      data: JSON.stringify(billingDocument)
+    });
+  }
+</script>
+</body>
+</html>
