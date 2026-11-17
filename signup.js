@@ -1,23 +1,50 @@
-// signup.js — validates the sign-up form, builds a JSON object
-// from the DOM input values, and displays the JSON collection on the page.
+
+/*
+  Pages & Lattes - Signup Form
+  Validates form inputs, displays shopper JSON,
+  and sends shopper information to MongoDB.
+*/
 
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("signupForm");
   const jsonOutput = document.getElementById("jsonOutput");
 
-  // Keep every submission in a "collection" (array) stored in localStorage
   const STORAGE_KEY = "pagesAndLattesShoppers";
 
+  const API_URL =
+    "https://ist256.up.ist.psu.edu:3001/api/shopper";
+
+  // Retrieve saved shoppers without passwords.
   function getCollection() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const collection = saved ? JSON.parse(saved) : [];
+
+      if (!Array.isArray(collection)) {
+        return [];
+      }
+
+      return collection.map(function (shopper) {
+        const { password, confirmPassword, ...safeShopper } = shopper;
+        return safeShopper;
+      });
+    } catch (error) {
+      console.error("Could not read saved shoppers:", error);
+      return [];
+    }
   }
 
   function saveCollection(collection) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(collection));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(collection)
+    );
   }
 
-  form.addEventListener("submit", function (event) {
+  // Remove passwords from any older localStorage records.
+  saveCollection(getCollection());
+
+  form.addEventListener("submit", async function (event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -25,67 +52,121 @@ document.addEventListener("DOMContentLoaded", function () {
     const email = document.getElementById("email");
     const username = document.getElementById("username");
     const password = document.getElementById("password");
-    const confirmPassword = document.getElementById("confirmPassword");
+    const confirmPassword =
+      document.getElementById("confirmPassword");
     const phone = document.getElementById("phone");
-    const favoriteGenre = document.getElementById("favoriteGenre");
+    const favoriteGenre =
+      document.getElementById("favoriteGenre");
 
     let valid = true;
 
-    // --- Field integrity checks ---
-    [fullName, email, username, password, confirmPassword].forEach(field => {
+    // Clear previous validation errors.
+    [
+      fullName,
+      email,
+      username,
+      password,
+      confirmPassword
+    ].forEach(function (field) {
       field.classList.remove("is-invalid");
     });
 
+    // Validate full name.
     if (fullName.value.trim() === "") {
       fullName.classList.add("is-invalid");
       valid = false;
     }
 
+    // Validate email.
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!emailPattern.test(email.value.trim())) {
       email.classList.add("is-invalid");
       valid = false;
     }
 
+    // Validate username.
     if (username.value.trim().length < 3) {
       username.classList.add("is-invalid");
       valid = false;
     }
 
+    // Validate password.
     if (password.value.length < 6) {
       password.classList.add("is-invalid");
       valid = false;
     }
 
-    if (confirmPassword.value !== password.value || confirmPassword.value === "") {
+    // Confirm passwords match.
+    if (
+      confirmPassword.value !== password.value ||
+      confirmPassword.value === ""
+    ) {
       confirmPassword.classList.add("is-invalid");
       valid = false;
     }
 
+    // Stop if validation fails.
     if (!valid) {
       jsonOutput.style.display = "none";
       return;
     }
 
-    // --- Build JSON object from DOM input name:value pairs ---
+    // Build shopper JSON.
+    // Passwords are intentionally excluded.
     const newUser = {
       fullName: fullName.value.trim(),
       email: email.value.trim(),
       username: username.value.trim(),
-      password: password.value,
       phone: phone.value.trim(),
       favoriteGenre: favoriteGenre.value
     };
 
-    // Add to the shopper collection and persist it
-    const collection = getCollection();
-    collection.push(newUser);
-    saveCollection(collection);
+    // Send shopper data to the HTTPS API.
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newUser)
+      });
 
-    // --- Display the JSON document (the full collection) on the page ---
-    jsonOutput.style.display = "block";
-    jsonOutput.textContent = JSON.stringify(collection, null, 2);
+      if (!response.ok) {
+        throw new Error(
+          "Server returned HTTP " + response.status
+        );
+      }
 
-    form.reset();
+      console.log("Shopper saved to MongoDB");
+
+      // Update the local JSON collection
+      // only after the API confirms success.
+      const collection = getCollection();
+
+      collection.push(newUser);
+      saveCollection(collection);
+
+      // Display JSON collection on the page.
+      jsonOutput.style.display = "block";
+      jsonOutput.textContent = JSON.stringify(
+        collection,
+        null,
+        2
+      );
+
+      form.reset();
+
+    } catch (error) {
+      console.error(
+        "Shopper API submission failed:",
+        error
+      );
+
+      alert(
+        "Unable to save signup information. " +
+        "Please try again."
+      );
+    }
   });
 });
