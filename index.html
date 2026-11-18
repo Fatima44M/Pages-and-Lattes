@@ -1,126 +1,140 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Pages & Lattes</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    .divider {
-      width: 60px;
-      height: 3px;
-      background: #a45c6d;
-      margin: 16px auto;
-      border-radius: 2px;
-    }
+    <title>Pages & Lattes</title>
 
-    .hours-highlight {
-      color: #f6c9d1;
-      font-weight: bold;
-    }
-  </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- AngularJS Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: #a45c6d;
+            margin: 16px auto;
+            border-radius: 2px;
+        }
+
+        .hours-highlight {
+            color: #a45c6d;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
- 
-<nav>
-    <a href="#books">Books</a>
-    <a href="#hours">Hours</a>
-    <a href="#contact">Contact</a>
-    <a href="product.html">Product Management</a>
-    <a href="shoppingcart.html">Shopping Cart</a>
-    <a href="signup.html">Sign Up</a>
-    <a href="shipping.html">Shipping</a>
-    <a href="billing.html">Billing</a>
-    <a href="returns.html">Returns</a>
-</nav>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <a href="index.html">Home</a>
+        <a href="#books">Books</a>
+        <a href="#hours">Hours</a>
+        <a href="#contact">Contact</a>
+        <a href="product.html">Products</a>
+        <a href="shoppingcart.html">Shopping Cart</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="shipping.html">Shipping</a>
+        <a href="billing.html">Billing</a>
+        <a href="returns.html">Returns</a>
+    </nav>
 
-  <header>
-    <img src="Pages___Lattes_Main-Hero_Photo.jpg" alt="Cafe interior">
+    <!-- Hero Section -->
+    <header>
+        <img src="Pages___Lattes_Main-Hero_Photo.jpg" alt="Cafe interior">
 
-    <div class="hero-text">
-      <h1>Pages & Lattes</h1>
-      <p style="color:#fbe4e8; font-style: italic;">
-        Where every cup comes with a chapter
-      </p>
-    </div>
-  </header>
+        <div class="hero-text">
+            <h1>Pages & Lattes</h1>
+            <p style="color:#fbe4e8; font-style: italic;">
+                Where every cup comes with a chapter
+            </p>
+        </div>
+    </header>
 
-  <main>
+    <main>
 
-    <section class="intro">
-      <h2>Welcome In</h2>
+        <!-- Welcome Section -->
+        <section class="intro">
+            <h2>Welcome In</h2>
+            <div class="divider"></div>
 
-      <div class="divider"></div>
+            <p>
+                Pages & Lattes is a cozy corner cafe and library rolled into one —
+                curl up with a good book, sip a perfectly poured latte, and stay as
+                long as you like.
+            </p>
+        </section>
 
-      <p>
-        Pages & Lattes is a cozy corner cafe and library rolled into one —
-        curl up with a good book, sip a perfectly poured latte, and stay as
-        long as you like.
-      </p>
-    </section>
+        <!-- Books and Menu Section -->
+        <section id="books" class="menu-grid">
 
-    <section id="books" class="menu-grid">
+            <div class="menu-card">
+                <img src="latte.jpg" alt="Latte">
+                <h3>House Latte</h3>
+                <p>Smooth espresso, steamed milk, and a little foam art.</p>
+            </div>
 
-      <div class="menu-card">
-        <img src="latte.jpg" alt="Latte">
-        <h3>House Latte</h3>
-        <p>
-          Smooth espresso, steamed milk, and a little foam art.
+            <div class="menu-card">
+                <img src="Croissant.jpg" alt="Croissants">
+                <h3>Fresh Croissants</h3>
+                <p>Buttery, flaky, and baked daily.</p>
+            </div>
+
+            <div class="menu-card">
+                <img src="muffin.jpg" alt="Cupcakes">
+                <h3>Sweet Treats</h3>
+                <p>Raspberry-topped bakes made fresh.</p>
+            </div>
+
+        </section>
+
+        <!-- Reading Corner -->
+        <section class="reading-corner">
+
+            <img src="someone_reading.jpg" alt="Reading corner">
+
+            <div class="text">
+                <h2>The Reading Corner</h2>
+
+                <p>
+                    Grab a table by the window and lose yourself in a novel from our
+                    shelves — mysteries, romance, and everything in between.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="hours">
+
+        <p class="hours-highlight">
+            Open Daily: 7:00 AM – 8:00 PM
         </p>
-      </div>
 
-      <div class="menu-card">
-        <img src="Croissant.jpg" alt="Croissants">
-        <h3>Fresh Croissants</h3>
-        <p>
-          Buttery, flaky, and baked daily.
+        <p id="contact">
+            123 Chapter Lane, Booktown | (555) 123-4567
         </p>
-      </div>
 
-      <div class="menu-card">
-        <img src="muffin.jpg" alt="Cupcakes">
-        <h3>Sweet Treats</h3>
-        <p>
-          Raspberry-topped bakes made fresh.
-        </p>
-      </div>
+        <p>&copy; 2026 Pages & Lattes</p>
 
-    </section>
+    </footer>
 
-    <section class="reading-corner">
-
-      <img src="someone_reading.jpg" alt="Reading corner">
-
-      <div class="text">
-        <h2>The Reading Corner</h2>
-
-        <p>
-          Grab a table by the window and lose yourself in a novel from our
-          shelves — mysteries, romance, and everything in between.
-        </p>
-      </div>
-
-    </section>
-
-  </main>
-
-  <footer id="hours">
-
-    <p class="hours-highlight">
-      Open Daily: 7:00 AM – 8:00 PM
-    </p>
-
-    <p id="contact">
-      123 Chapter Lane, Booktown | (555) 123-4567
-    </p>
-
-    <p>
-      &copy; 2026 Pages & Lattes
-    </p>
-
-  </footer>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
