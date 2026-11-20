@@ -218,7 +218,23 @@
       $("#searchMsg").text("Product " + product.productId + " added.");
     }
     showJson(product);
-  });
+
+$.ajax({
+    url: "https://ist256.up.ist.psu.edu:3001/api/products",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(product),
+
+    success: function(response) {
+        console.log("Saved to MongoDB:", response);
+        $("#searchMsg").text("Product saved to MongoDB!");
+    },
+
+    error: function(xhr) {
+        console.log("MongoDB error:", xhr.responseText);
+        $("#searchMsg").text("Error saving product.");
+    }
+});
 
   $("#searchBtn").on("click", function () {
     var id = $("#searchId").val().trim();
